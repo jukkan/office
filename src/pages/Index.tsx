@@ -7,10 +7,7 @@ const Index = () => {
         /* 
         Office App Launcher
         
-        Instructions:
-        - Replace <tenant> in SharePoint URL with your organization's tenant name
-        - Example: https://contoso.sharepoint.com/_layouts/15/sharepoint.aspx
-        - All other URLs are ready to use
+        All URLs are ready to use for Microsoft 365 web applications.
         */
         
         * {
@@ -20,7 +17,7 @@ const Index = () => {
         }
 
         :root {
-          /* Light mode colors */
+          /* Light mode colors only */
           --primary-blue: #0078D4;
           --primary-blue-hover: #106EBE;
           --bg-primary: #FFFFFF;
@@ -31,19 +28,6 @@ const Index = () => {
           --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
           --shadow-hover: 0 4px 12px rgba(0,0,0,0.15);
           --tile-bg: #FFFFFF;
-        }
-
-        @media (prefers-color-scheme: dark) {
-          :root {
-            --bg-primary: #1E1E1E;
-            --bg-secondary: #2D2D2D;
-            --text-primary: #FFFFFF;
-            --text-secondary: #D4D4D4;
-            --border-color: #404040;
-            --shadow-light: 0 2px 4px rgba(0,0,0,0.3);
-            --shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
-            --tile-bg: #2D2D2D;
-          }
         }
 
         body {
@@ -149,46 +133,11 @@ const Index = () => {
           line-height: 1.4;
         }
 
-        .dark-mode-toggle {
-          position: fixed;
-          top: 1rem;
-          right: 1rem;
-          background: var(--tile-bg);
-          border: 1px solid var(--border-color);
-          border-radius: 50%;
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          box-shadow: var(--shadow-light);
-          transition: all 0.2s ease;
-        }
-
-        .dark-mode-toggle:hover {
-          box-shadow: var(--shadow-hover);
-        }
-
         .footer {
           text-align: center;
           padding: 2rem 0;
           color: var(--text-secondary);
           font-size: 0.9rem;
-        }
-
-        .footer a {
-          color: var(--primary-blue);
-          text-decoration: none;
-        }
-
-        .footer a:hover {
-          text-decoration: underline;
-        }
-
-        /* Dark mode manual toggle styles */
-        .dark .dark-mode-toggle {
-          background: var(--bg-primary);
         }
 
         @media (max-width: 639px) {
@@ -207,28 +156,6 @@ const Index = () => {
       `}</style>
 
       <div className="min-h-screen" style={{ background: 'var(--bg-secondary)' }}>
-        {/* Dark Mode Toggle */}
-        <button 
-          className="dark-mode-toggle"
-          onClick={() => {
-            document.documentElement.classList.toggle('dark');
-          }}
-          aria-label="Toggle dark mode"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="m12 2 0 2"/>
-            <path d="m12 20 0 2"/>
-            <path d="m12 20 0 2"/>
-            <path d="m4.93 4.93 1.41 1.41"/>
-            <path d="m17.66 17.66 1.41 1.41"/>
-            <path d="m2 12 2 0"/>
-            <path d="m20 12 2 0"/>
-            <path d="m6.34 17.66-1.41 1.41"/>
-            <path d="m19.07 4.93-1.41 1.41"/>
-          </svg>
-        </button>
-
         <div className="container">
           {/* Header */}
           <header className="header">
@@ -327,7 +254,7 @@ const Index = () => {
 
             {/* OneDrive */}
             <a 
-              href="https://onedrive.live.com/" 
+              href="https://m365.cloud.microsoft/onedrive/" 
               className="app-tile"
               aria-label="Open Microsoft OneDrive"
               target="_blank"
@@ -359,22 +286,6 @@ const Index = () => {
               <div className="app-description">Chat, meetings, and collaboration</div>
             </a>
 
-            {/* SharePoint */}
-            <a 
-              href="https://<tenant>.sharepoint.com/_layouts/15/sharepoint.aspx" 
-              className="app-tile"
-              aria-label="Open Microsoft SharePoint"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-              </svg>
-              <div className="app-name">SharePoint</div>
-              <div className="app-description">Team sites and content management</div>
-            </a>
-
             {/* Planner */}
             <a 
               href="https://tasks.office.com/" 
@@ -398,17 +309,143 @@ const Index = () => {
               <div className="app-name">Planner</div>
               <div className="app-description">Task management and planning</div>
             </a>
+
+            {/* Power BI */}
+            <a 
+              href="https://app.powerbi.com/" 
+              className="app-tile"
+              aria-label="Open Microsoft Power BI"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 3v18h18"/>
+                <rect x="7" y="10" width="3" height="8"/>
+                <rect x="12" y="8" width="3" height="10"/>
+                <rect x="17" y="6" width="3" height="12"/>
+              </svg>
+              <div className="app-name">Power BI</div>
+              <div className="app-description">Business intelligence and analytics</div>
+            </a>
+
+            {/* Power Apps */}
+            <a 
+              href="https://make.powerapps.com/" 
+              className="app-tile"
+              aria-label="Open Microsoft Power Apps"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="9" cy="9" r="2"/>
+                <path d="M21 15.5c-1-1.5-3-2.5-5-2.5s-4 1-5 2.5"/>
+              </svg>
+              <div className="app-name">Power Apps</div>
+              <div className="app-description">Build custom business apps</div>
+            </a>
+
+            {/* Power Automate */}
+            <a 
+              href="https://make.powerautomate.com/" 
+              className="app-tile"
+              aria-label="Open Microsoft Power Automate"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 2v4"/>
+                <path d="M16 2v4"/>
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <path d="M3 10h18"/>
+                <path d="M8 14h.01"/>
+                <path d="M12 14h.01"/>
+                <path d="M16 14h.01"/>
+                <path d="M8 18h.01"/>
+                <path d="M12 18h.01"/>
+                <path d="M16 18h.01"/>
+              </svg>
+              <div className="app-name">Power Automate</div>
+              <div className="app-description">Automate workflows and processes</div>
+            </a>
+
+            {/* To Do */}
+            <a 
+              href="https://to-do.office.com/" 
+              className="app-tile"
+              aria-label="Open Microsoft To Do"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              <div className="app-name">To Do</div>
+              <div className="app-description">Task management and reminders</div>
+            </a>
+
+            {/* Loop */}
+            <a 
+              href="https://loop.cloud.microsoft/" 
+              className="app-tile"
+              aria-label="Open Microsoft Loop"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="7.5,4.21 12,6.81 16.5,4.21"/>
+                <polyline points="7.5,19.79 7.5,14.6 3,12"/>
+                <polyline points="21,12 16.5,14.6 16.5,19.79"/>
+                <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+              <div className="app-name">Loop</div>
+              <div className="app-description">Collaborative workspaces</div>
+            </a>
+
+            {/* Forms */}
+            <a 
+              href="https://forms.office.com/" 
+              className="app-tile"
+              aria-label="Open Microsoft Forms"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10,9 9,9 8,9"/>
+              </svg>
+              <div className="app-name">Forms</div>
+              <div className="app-description">Create surveys and forms</div>
+            </a>
+
+            {/* Bookings */}
+            <a 
+              href="https://outlook.office.com/bookings/" 
+              className="app-tile"
+              aria-label="Open Microsoft Bookings"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <div className="app-name">Bookings</div>
+              <div className="app-description">Schedule and manage appointments</div>
+            </a>
           </main>
 
           {/* Footer */}
           <footer className="footer">
-            <p>
-              Unofficial Office App Launcher • 
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer"> View on GitHub</a>
-            </p>
-            <p style={{ marginTop: '0.5rem', fontSize: '0.8rem' }}>
-              Note: Replace &lt;tenant&gt; in SharePoint URL with your organization name
-            </p>
+            <p>Unofficial Office App Launcher</p>
           </footer>
         </div>
       </div>
