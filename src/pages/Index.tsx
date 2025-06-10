@@ -1,5 +1,8 @@
 
 const Index = () => {
+  // Debug log to confirm React version is running
+  console.log('Office App Launcher - React component rendered');
+
   return (
     <>
       {/* HTML Head equivalent styles */}
