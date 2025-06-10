@@ -1,24 +1,397 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>office-fluent-launcher</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office App Launcher</title>
+    <meta name="description" content="Quick access to Microsoft 365 web applications">
+    
+    <!-- 
+    Office App Launcher
+    
+    Instructions:
+    - Replace <tenant> in SharePoint URL with your organization's tenant name
+    - Example: https://contoso.sharepoint.com/_layouts/15/sharepoint.aspx
+    - All other URLs are ready to use
+    -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <meta property="og:title" content="office-fluent-launcher" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+        :root {
+            /* Light mode colors */
+            --primary-blue: #0078D4;
+            --primary-blue-hover: #106EBE;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --text-primary: #323130;
+            --text-secondary: #605E5C;
+            --border-color: #EDEBE9;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 12px rgba(0,0,0,0.15);
+            --tile-bg: #FFFFFF;
+        }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1E1E1E;
+                --bg-secondary: #2D2D2D;
+                --text-primary: #FFFFFF;
+                --text-secondary: #D4D4D4;
+                --border-color: #404040;
+                --shadow-light: 0 2px 4px rgba(0,0,0,0.3);
+                --shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
+                --tile-bg: #2D2D2D;
+            }
+        }
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 640px) {
+            .apps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .apps-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .apps-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .app-tile {
+            background: var(--tile-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-blue);
+        }
+
+        .app-tile:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+
+        .app-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .app-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--tile-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-light);
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .dark-mode-toggle:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Manual dark mode styles */
+        .dark {
+            --bg-primary: #1E1E1E;
+            --bg-secondary: #2D2D2D;
+            --text-primary: #FFFFFF;
+            --text-secondary: #D4D4D4;
+            --border-color: #404040;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
+            --tile-bg: #2D2D2D;
+        }
+
+        @media (max-width: 639px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 1rem 0.5rem;
+            }
+            
+            .app-tile {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="m12 2 0 2"/>
+            <path d="m12 20 0 2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="m2 12 2 0"/>
+            <path d="m20 12 2 0"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+        </svg>
+    </button>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Office App Launcher</h1>
+            <p>Access your Microsoft 365 apps quickly and easily</p>
+        </header>
+
+        <!-- Apps Grid -->
+        <main class="apps-grid">
+            <!-- Word -->
+            <a href="https://word.office.com/" class="app-tile" aria-label="Open Microsoft Word" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10,9 9,9 8,9"/>
+                </svg>
+                <div class="app-name">Word</div>
+                <div class="app-description">Create and edit documents</div>
+            </a>
+
+            <!-- Excel -->
+            <a href="https://excel.office.com/" class="app-tile" aria-label="Open Microsoft Excel" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <path d="M8 13h2m-2 4h2m4-4h2m-2 4h2"/>
+                </svg>
+                <div class="app-name">Excel</div>
+                <div class="app-description">Create and manage spreadsheets</div>
+            </a>
+
+            <!-- PowerPoint -->
+            <a href="https://powerpoint.office.com/" class="app-tile" aria-label="Open Microsoft PowerPoint" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="12" rx="1"/>
+                    <rect x="7" y="8" width="10" height="8" rx="1"/>
+                </svg>
+                <div class="app-name">PowerPoint</div>
+                <div class="app-description">Create presentations</div>
+            </a>
+
+            <!-- Outlook -->
+            <a href="https://outlook.office.com/mail/" class="app-tile" aria-label="Open Microsoft Outlook" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <div class="app-name">Outlook</div>
+                <div class="app-description">Email and calendar</div>
+            </a>
+
+            <!-- OneNote -->
+            <a href="https://www.onenote.com/notebooks" class="app-tile" aria-label="Open Microsoft OneNote" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10,9 9,9 8,9"/>
+                </svg>
+                <div class="app-name">OneNote</div>
+                <div class="app-description">Digital note-taking</div>
+            </a>
+
+            <!-- OneDrive -->
+            <a href="https://onedrive.live.com/" class="app-tile" aria-label="Open Microsoft OneDrive" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-6l-2-3h-4l-2 3H2"/>
+                    <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                </svg>
+                <div class="app-name">OneDrive</div>
+                <div class="app-description">Cloud storage and file sharing</div>
+            </a>
+
+            <!-- Teams -->
+            <a href="https://teams.microsoft.com/" class="app-tile" aria-label="Open Microsoft Teams" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <div class="app-name">Teams</div>
+                <div class="app-description">Chat, meetings, and collaboration</div>
+            </a>
+
+            <!-- SharePoint -->
+            <a href="https://<tenant>.sharepoint.com/_layouts/15/sharepoint.aspx" class="app-tile" aria-label="Open Microsoft SharePoint" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                <div class="app-name">SharePoint</div>
+                <div class="app-description">Team sites and content management</div>
+            </a>
+
+            <!-- Planner -->
+            <a href="https://tasks.office.com/" class="app-tile" aria-label="Open Microsoft Planner" target="_blank" rel="noopener noreferrer">
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <path d="M8 14h.01"/>
+                    <path d="M12 14h.01"/>
+                    <path d="M16 14h.01"/>
+                    <path d="M8 18h.01"/>
+                    <path d="M12 18h.01"/>
+                    <path d="M16 18h.01"/>
+                </svg>
+                <div class="app-name">Planner</div>
+                <div class="app-description">Task management and planning</div>
+            </a>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                Unofficial Office App Launcher • 
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                Note: Replace &lt;tenant&gt; in SharePoint URL with your organization name
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            
+            // Save preference to localStorage
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        // Load saved dark mode preference or respect system preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedDarkMode = localStorage.getItem('darkMode');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedDarkMode === 'true' || (savedDarkMode === null && systemPrefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        });
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (localStorage.getItem('darkMode') === null) {
+                if (e.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+    </script>
+</body>
 </html>
