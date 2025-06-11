@@ -449,6 +449,7 @@ const Index = () => {
           {/* Footer */}
           <footer className="footer">
             <p>Unofficial Office App Launcher. Not affiliated with Microsoft in any way.</p>
+            <br />
             <p>
               Go to GitHub for more info:{" "}
               <a
