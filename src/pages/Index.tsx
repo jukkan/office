@@ -20,7 +20,7 @@ const Index = () => {
         }
 
         :root {
-          /* Light mode colors only */
+          /* Light mode colors */
           --primary-blue: #0078D4;
           --primary-blue-hover: #106EBE;
           --bg-primary: #FFFFFF;
@@ -31,6 +31,26 @@ const Index = () => {
           --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
           --shadow-hover: 0 4px 12px rgba(0,0,0,0.15);
           --tile-bg: #FFFFFF;
+          /* Fluent shadow-4 for light theme */
+          --fluent-shadow-4: 0px 8px 16px rgba(0, 0, 0, 0.14);
+        }
+
+        @media (prefers-color-scheme: dark) {
+          :root {
+            /* Dark mode colors */
+            --primary-blue: #479EF5;
+            --primary-blue-hover: #6BB6FF;
+            --bg-primary: #1E1E1E;
+            --bg-secondary: #2D2D30;
+            --text-primary: #FFFFFF;
+            --text-secondary: #CCCCCC;
+            --border-color: #484848;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
+            --tile-bg: #252526;
+            /* Fluent shadow-4 for dark theme */
+            --fluent-shadow-4: 0px 8px 16px rgba(0, 0, 0, 0.64);
+          }
         }
 
         body {
@@ -91,9 +111,8 @@ const Index = () => {
 
         .app-tile {
           background: var(--tile-bg);
-          border: 1px solid var(--border-color);
           border-radius: 8px;
-          padding: 1.3rem 1.2rem;
+          padding: clamp(1rem, 2vw, 1.5rem);
           text-decoration: none;
           color: var(--text-primary);
           display: flex;
@@ -101,7 +120,7 @@ const Index = () => {
           align-items: center;
           text-align: center;
           transition: all 0.2s ease;
-          box-shadow: var(--shadow-light);
+          box-shadow: var(--fluent-shadow-4);
           position: relative;
           overflow: hidden;
         }
@@ -109,7 +128,6 @@ const Index = () => {
         .app-tile:hover {
           transform: translateY(-2px);
           box-shadow: var(--shadow-hover);
-          border-color: var(--primary-blue);
         }
 
         .app-tile:focus {
@@ -118,15 +136,15 @@ const Index = () => {
         }
 
         .app-icon {
-          width: 30px;
-          height: 30px;
+          width: 32px;
+          height: 32px;
           margin-bottom: 0.6rem;
           color: var(--primary-blue);
         }
 
         .app-name {
-          font-size: 0.9rem;
-          font-weight: 500;
+          font-size: 1.125rem;
+          font-weight: 600;
           margin-bottom: 0.25rem;
         }
 
@@ -150,10 +168,6 @@ const Index = () => {
           
           .container {
             padding: 1rem 0.5rem;
-          }
-          
-          .app-tile {
-            padding: 0.512rem 0.64rem;
           }
         }
       `}</style>
