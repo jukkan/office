@@ -23,22 +23,22 @@ jobs:
           script: |
             set -e
 
-            # Go to your project folder
             cd ${{ secrets.VPS_PROJECT_PATH }}
 
-            echo "➡️ Fetching latest from origin"
-            git fetch --all
+            echo "➡️ Ensure GitHub in known_hosts"
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-            echo "➡️ Resetting to origin/main"
+            echo "➡️ Fetch & reset to origin/main"
+            git fetch --all
             git reset --hard origin/main
 
-            echo "➡️ Installing dependencies"
+            echo "➡️ Install deps"
             npm install
 
-            echo "➡️ Cleaning old build"
+            echo "➡️ Clean old build"
             rm -rf dist
 
-            echo "➡️ Building fresh"
+            echo "➡️ Build fresh"
             npm run build
 
             echo "✅ Deploy complete!"
