@@ -163,7 +163,7 @@ const Index = () => {
           {/* Header */}
           <header className="header">
             <h1>Office App Launcher</h1>
-            <p>Access your Microsoft 365 apps quickly and easily - no Copilot needed.</p>
+            <p>Access your Microsoft 365 apps quickly and easily - no Copilot detour needed.</p>
           </header>
 
           {/* Apps Grid */}
