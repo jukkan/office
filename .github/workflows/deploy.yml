@@ -21,8 +21,24 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
+            set -e
+
+            # Go to your project folder
             cd ${{ secrets.VPS_PROJECT_PATH }}
-            git reset --hard
-            git pull origin main
+
+            echo "➡️ Fetching latest from origin"
+            git fetch --all
+
+            echo "➡️ Resetting to origin/main"
+            git reset --hard origin/main
+
+            echo "➡️ Installing dependencies"
             npm install
+
+            echo "➡️ Cleaning old build"
+            rm -rf dist
+
+            echo "➡️ Building fresh"
             npm run build
+
+            echo "✅ Deploy complete!"
