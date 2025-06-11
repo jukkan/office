@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
@@ -27,9 +28,15 @@ const Index = () => {
     { name: 'Word', icon: '📝', url: 'https://office.com/launch/word' },
     { name: 'Excel', icon: '📊', url: 'https://office.com/launch/excel' },
     { name: 'PowerPoint', icon: '📈', url: 'https://office.com/launch/powerpoint' },
-    { name: 'OneDrive', icon: '☁️', url: 'https://onedrive.live.com' },
-    { name: 'SharePoint', icon: '🔗', url: 'https://sharepoint.com' },
-    { name: 'OneNote', icon: '📔', url: 'https://onenote.com' }
+    { name: 'OneDrive', icon: '☁️', url: 'https://m365.cloud.microsoft/onedrive/' },
+    { name: 'OneNote', icon: '📔', url: 'https://onenote.com' },
+    { name: 'Power BI', icon: '📊', url: 'https://app.powerbi.com/' },
+    { name: 'Power Apps', icon: '⚡', url: 'https://make.powerapps.com/' },
+    { name: 'Power Automate', icon: '🔄', url: 'https://make.powerautomate.com/' },
+    { name: 'To Do', icon: '✅', url: 'https://to-do.office.com/' },
+    { name: 'Loop', icon: '🔗', url: 'https://loop.cloud.microsoft/' },
+    { name: 'Forms', icon: '📋', url: 'https://forms.office.com/' },
+    { name: 'Bookings', icon: '📅', url: 'https://outlook.office.com/bookings/' }
   ];
 
   return (
