@@ -1,54 +1,28 @@
-# Welcome to your Lovable project
+# Welcome to OFFI.CEO!
 
-## Project info
+## Live app
 
-**URL**: https://lovable.dev/projects/38299c46-183b-4ec6-a9f9-fcbac88a060e
+**Open and bookmark this**: https://offi.ceo
 
-## How can I edit this code?
+## What is this project about?
 
-There are several ways of editing your application.
+It's a simple home page that helps you to launch common apps in your Microsoft 365 subscription. That's it!
 
-**Use Lovable**
+**Doesn't Microsoft offer this already?**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/38299c46-183b-4ec6-a9f9-fcbac88a060e) and start prompting.
+They used to - until Copilot took over everything. Today, when you visit a URL like office.com, you won't find your trusty Office applications there. You'll be greeted with Copilot chat and agents. There's not even the traditional waffle menu in the top left corner anymore.
 
-Changes made via Lovable will be committed automatically to this repo.
+**Wow, that's not great...**
 
-**Use your preferred IDE**
+Tell me about it. It's quite alright to launch new products and make GenAI available. It's another thing to [force it upon paying customers](https://www.perspectives.plus/p/use-the-forced-copilot).
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## How is this built?
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+It's built with GenAI. Using [Lovable](https://lovable.dev/) and ChatGPT mostly.
 
-Follow these steps:
+**Hey! I thought you didn't want AI to take over everything?**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+I use GenAI every day, for many things. There's a time & place for it. The bottom line is, we need to let people decide what's suitable for them. Instead of deciding that AI will replace them or all their tools.
 
 ## What technologies are used for this project?
 
@@ -60,14 +34,24 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+Plus anything else the AI generators added after this readme was written.
 
-Simply open [Lovable](https://lovable.dev/projects/38299c46-183b-4ec6-a9f9-fcbac88a060e) and click on Share -> Publish.
+**Are you sure you know how to use these things...**
 
-## Can I connect a custom domain to my Lovable project?
+I'm sure I _don't_ know. I'm not a developer who has ever done traditional programming. I've been a citizen developer / low-code developer for the past 20 years. Working with business apps in the Microsoft ecosystem, like Dynamics 365 and Power Platform.
 
-Yes, you can!
+**Why are you here on GitHub then?**
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Because I like exploring new tech and seeing how far I can get with it. Like it or not, vibe coding is a thing now. Our new Chatty AI overlords offer better tools for building apps than the earlier low-code GUI experiences did. At least when building for the public web, with no sensitive business data nor enterprise governance requirements.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+**I've got some ideas on how this could be improved/fixed**
+
+Awesome! Open an issue and let's see how this open source thing works.
+
+## Further info
+
+I write a weekly newsletter called [Perspectives on Power Platform](https://www.perspectives.plus/). "Brutally honest and cheerfully sarcastic insights on Microsoft’s low-code and AI technology, business apps, and the business of software."
+
+I work as a solopreneur and Power Platform Advisor at [Niiranen Advisory Oy](https://niiranenadvisory.com/). If you've got questions or needs around Microsoft business apps, low-code governance, licensing(!), then maybe I could help you.
+
+Finally, I do social posts on [LinkedIn](https://www.linkedin.com/in/jukkaniiranen/), [Mastodon](https://mstdn.social/@jukkan) and [Bluesky](https://bsky.app/profile/jukkan.bsky.social). Opinions are my own and I've got plenty of them.

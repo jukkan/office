@@ -26,7 +26,7 @@ const Index = () => {
     { name: 'Outlook', icon: '📧', url: 'https://outlook.office.com' },
     { name: 'Teams', icon: '👥', url: 'https://teams.microsoft.com' },
     { name: 'Word', icon: '📝', url: 'https://office.com/launch/word' },
-    { name: 'Excel', icon: '📊', url: 'https://office.com/launch/excel' },
+    { name: 'Excel', icon: '🧮', url: 'https://office.com/launch/excel' },
     { name: 'PowerPoint', icon: '📈', url: 'https://office.com/launch/powerpoint' },
     { name: 'OneDrive', icon: '☁️', url: 'https://m365.cloud.microsoft/onedrive/' },
     { name: 'OneNote', icon: '📔', url: 'https://onenote.com' },
@@ -34,7 +34,8 @@ const Index = () => {
     { name: 'Power Apps', icon: '⚡', url: 'https://make.powerapps.com/' },
     { name: 'Power Automate', icon: '🔄', url: 'https://make.powerautomate.com/' },
     { name: 'To Do', icon: '✅', url: 'https://to-do.office.com/' },
-    { name: 'Loop', icon: '🔗', url: 'https://loop.cloud.microsoft/' },
+    { name: 'Planner', icon: '⌛', url: 'https://planner.cloud.microsoft/' },
+    { name: 'Loop', icon: '➰', url: 'https://loop.cloud.microsoft/' },
     { name: 'Forms', icon: '📋', url: 'https://forms.office.com/' },
     { name: 'Bookings', icon: '📅', url: 'https://outlook.office.com/bookings/' }
   ];
@@ -216,7 +217,7 @@ const Index = () => {
       <div className="container">
         <header className="header">
           <h1>Office App Launcher</h1>
-          <p>Quick access to your Microsoft Office applications</p>
+          <p>Quick access to your Microsoft Office applications, no Copilot detour needed.</p>
         </header>
 
         <div className="apps-grid">
@@ -239,6 +240,9 @@ const Index = () => {
             </a>
           ))}
         </div>
+<footer className="footer" style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
+          Not affiliated with Microsoft. See <a href="https://github.com/jukkan/office" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>GitHub</a> for more info.
+        </footer>
       </div>
     </>
   );
