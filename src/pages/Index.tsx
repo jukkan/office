@@ -449,6 +449,17 @@ const Index = () => {
           {/* Footer */}
           <footer className="footer">
             <p>Unofficial Office App Launcher. Not affiliated with Microsoft in any way.</p>
+            <p>
+              Go to GitHub for more info:{" "}
+              <a
+                href="https://github.com/jukkan/office"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--primary-blue)", textDecoration: "underline" }}
+              >
+                https://github.com/jukkan/office
+              </a>
+            </p>
           </footer>
         </div>
       </div>
