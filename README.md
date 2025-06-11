@@ -4,6 +4,10 @@
 
 **Open and bookmark this**: https://offi.ceo
 
+## Screenshot
+
+![Screenshot](public/OffiCEO%20-%20Office%20App%20Launcher.png)
+
 ## What is this project about?
 
 It's a simple home page that helps you to launch common apps in your Microsoft 365 subscription. That's it!
