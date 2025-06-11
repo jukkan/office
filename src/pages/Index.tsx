@@ -93,7 +93,7 @@ const Index = () => {
           background: var(--tile-bg);
           border: 1px solid var(--border-color);
           border-radius: 8px;
-          padding: 2rem 1.5rem;
+          padding: 1.3rem 1.2rem;
           text-decoration: none;
           color: var(--text-primary);
           display: flex;
@@ -118,22 +118,22 @@ const Index = () => {
         }
 
         .app-icon {
-          width: 48px;
-          height: 48px;
-          margin-bottom: 1rem;
+          width: 30px;
+          height: 30px;
+          margin-bottom: 0.6rem;
           color: var(--primary-blue);
         }
 
         .app-name {
-          font-size: 1.1rem;
+          font-size: 0.9rem;
           font-weight: 500;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.25rem;
         }
 
         .app-description {
-          font-size: 0.9rem;
+          font-size: 0.58rem;
           color: var(--text-secondary);
-          line-height: 1.4;
+          line-height: 0.96;
         }
 
         .footer {
@@ -153,7 +153,7 @@ const Index = () => {
           }
           
           .app-tile {
-            padding: 1.5rem 1rem;
+            padding: 0.512rem 0.64rem;
           }
         }
       `}</style>
@@ -448,7 +448,7 @@ const Index = () => {
 
           {/* Footer */}
           <footer className="footer">
-            <p>Unofficial Office App Launcher</p>
+            <p>Unofficial Office App Launcher. Not affiliated with Microsoft in any way.</p>
           </footer>
         </div>
       </div>
