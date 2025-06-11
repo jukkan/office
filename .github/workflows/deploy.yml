@@ -21,8 +21,24 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
+            set -e
+
             cd ${{ secrets.VPS_PROJECT_PATH }}
-            git reset --hard
-            git pull origin main
+
+            echo "➡️ Ensure GitHub in known_hosts"
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+            echo "➡️ Fetch & reset to origin/main"
+            git fetch --all
+            git reset --hard origin/main
+
+            echo "➡️ Install deps"
             npm install
+
+            echo "➡️ Clean old build"
+            rm -rf dist
+
+            echo "➡️ Build fresh"
             npm run build
+
+            echo "✅ Deploy complete!"
