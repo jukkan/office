@@ -12,6 +12,8 @@
 
 It's a simple home page that helps you to launch common apps in your Microsoft 365 subscription. That's it!
 
+Some more background info is available in [the launch post](https://www.perspectives.plus/p/i-created-a-better-office-com).
+
 **Doesn't Microsoft offer this already?**
 
 They used to - until Copilot took over everything. Today, when you visit a URL like office.com, you won't find your trusty Office applications there. You'll be greeted with Copilot chat and agents. There's not even the traditional waffle menu in the top left corner anymore.
