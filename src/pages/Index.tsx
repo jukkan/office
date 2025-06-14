@@ -413,9 +413,6 @@ const Index = () => {
           box-shadow: var(--shadow-hover);
         }
         .export-import-row {
-          margin-top: 2.5rem; /* Big enough to always clear the top row */
-          padding-top: 0.6rem;
-          border-top: 1px solid var(--accent);
           width: 100%;
           display: flex;
           gap: 0.75rem;
@@ -426,14 +423,13 @@ const Index = () => {
             flex-direction: column;
             align-items: stretch;
             gap: 0.4rem;
-            margin-top: 2.7rem;
           }
         }
       `}</style>
 
-      {/* Controls panel, all vertically stacked, never overlapping */}
-      <div className="fixed top-4 right-4 flex flex-col items-end z-50 w-max">
-        {/* 1st row: Theme and Edit toggles */}
+      {/* Controls panel with vertical spacing to prevent overlap */}
+      <div className="fixed top-4 right-4 flex flex-col items-end w-max z-50">
+        {/* Theme/Edit toggles row */}
         <div className="flex flex-row gap-3 w-full">
           <button
             className="theme-toggle"
@@ -450,9 +446,12 @@ const Index = () => {
             <Edit3 />
           </button>
         </div>
-        {/* 2nd row: export/import, only visible in edit mode */}
+        {/* Export/Import row, positioned well below toggles */}
         {isEditMode && (
-          <div className="export-import-row">
+          <div
+            className="export-import-row mt-16 sm:mt-14"
+            /* force enough margin to be far below toggles even if flex grows on mobile */
+          >
             <Button
               id="exportBtn"
               onClick={handleExport}
