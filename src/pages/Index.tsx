@@ -55,6 +55,12 @@ const SortableTile: React.FC<{
   // Only apply drag handlers when in edit mode AND not currently editing this tile
   const shouldEnableDrag = isEditMode && !tile.isEditing;
 
+  const handleTileClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onTileClick(tile, index);
+  };
+
   return (
     <div
       ref={setNodeRef}
@@ -73,8 +79,8 @@ const SortableTile: React.FC<{
       ) : (
         <div
           className="app-tile"
-          onClick={() => onTileClick(tile, index)}
-          style={{ cursor: isEditMode && !tile.isEditing ? 'grab' : 'pointer' }}
+          onClick={handleTileClick}
+          style={{ cursor: isEditMode && !tile.isEditing ? 'pointer' : 'pointer' }}
         >
           <div className="app-icon">
             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -185,9 +191,10 @@ const Index = () => {
   };
 
   const handleTileClick = (tile: AppTile, index: number) => {
-    if (isEditMode) {
+    console.log('Tile clicked:', tile.name, 'Edit mode:', isEditMode, 'Currently editing:', tile.isEditing);
+    if (isEditMode && !tile.isEditing) {
       updateTile(index, { isEditing: true });
-    } else if (tile.url !== '#') {
+    } else if (!isEditMode && tile.url !== '#') {
       window.open(tile.url, '_blank', 'noopener,noreferrer');
     }
   };
