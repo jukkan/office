@@ -1,28 +1,18 @@
 
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Edit3, Plus } from 'lucide-react';
+
+interface AppTile {
+  name: string;
+  icon: string;
+  url: string;
+  isEditing?: boolean;
+}
 
 const Index = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    // Get theme from localStorage or fallback to system preference
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initialTheme = savedTheme || systemTheme;
-    
-    setTheme(initialTheme);
-    document.documentElement.setAttribute('data-theme', initialTheme);
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-  };
-
-  const apps = [
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [tiles, setTiles] = useState<AppTile[]>([
     { name: 'Outlook', icon: '📧', url: 'https://outlook.office.com' },
     { name: 'Teams', icon: '👥', url: 'https://teams.microsoft.com' },
     { name: 'Word', icon: '📝', url: 'https://office.com/launch/word' },
@@ -38,7 +28,74 @@ const Index = () => {
     { name: 'Loop', icon: '➰', url: 'https://loop.cloud.microsoft/' },
     { name: 'Forms', icon: '📋', url: 'https://forms.office.com/' },
     { name: 'Bookings', icon: '📅', url: 'https://outlook.office.com/bookings/' }
-  ];
+  ]);
+
+  useEffect(() => {
+    // Get theme from localStorage or fallback to system preference
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const initialTheme = savedTheme || systemTheme;
+    
+    setTheme(initialTheme);
+    document.documentElement.setAttribute('data-theme', initialTheme);
+
+    // Load tiles from localStorage
+    const savedTiles = localStorage.getItem('tiles');
+    if (savedTiles) {
+      try {
+        const parsedTiles = JSON.parse(savedTiles);
+        setTiles(parsedTiles);
+      } catch (error) {
+        console.error('Error parsing saved tiles:', error);
+      }
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  const toggleEditMode = () => {
+    setIsEditMode(!isEditMode);
+  };
+
+  const saveTiles = (newTiles: AppTile[]) => {
+    setTiles(newTiles);
+    localStorage.setItem('tiles', JSON.stringify(newTiles));
+  };
+
+  const addNewTile = () => {
+    const newTile: AppTile = {
+      name: 'New Tile',
+      icon: '🆕',
+      url: '#',
+      isEditing: true
+    };
+    const newTiles = [...tiles, newTile];
+    saveTiles(newTiles);
+  };
+
+  const updateTile = (index: number, updates: Partial<AppTile>) => {
+    const newTiles = tiles.map((tile, i) => 
+      i === index ? { ...tile, ...updates } : tile
+    );
+    saveTiles(newTiles);
+  };
+
+  const handleTileClick = (tile: AppTile, index: number) => {
+    if (isEditMode) {
+      updateTile(index, { isEditing: true });
+    } else if (tile.url !== '#') {
+      window.open(tile.url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleTileSubmit = (index: number, name: string, url: string) => {
+    updateTile(index, { name, url, isEditing: false });
+  };
 
   return (
     <>
@@ -113,6 +170,43 @@ const Index = () => {
           color: var(--accent);
         }
 
+        .edit-toggle {
+          position: fixed;
+          top: 1rem;
+          right: 5rem;
+          background: var(--card-bg);
+          border: none;
+          border-radius: 50%;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow: var(--shadow);
+          transition: all 0.2s ease;
+          z-index: 1000;
+        }
+
+        .edit-toggle:hover {
+          transform: scale(1.05);
+          box-shadow: var(--shadow-hover);
+        }
+
+        .edit-toggle.active {
+          background: var(--accent);
+        }
+
+        .edit-toggle svg {
+          width: 20px;
+          height: 20px;
+          color: var(--accent);
+        }
+
+        .edit-toggle.active svg {
+          color: white;
+        }
+
         .container {
           max-width: 1200px;
           margin: 0 auto;
@@ -158,6 +252,7 @@ const Index = () => {
           box-shadow: var(--shadow);
           position: relative;
           overflow: hidden;
+          cursor: pointer;
         }
 
         .app-tile:hover {
@@ -198,6 +293,59 @@ const Index = () => {
           left: 100%;
         }
 
+        .add-tile {
+          border: 2px dashed var(--accent);
+          background: transparent;
+        }
+
+        .add-tile:hover {
+          background: var(--card-bg);
+        }
+
+        .edit-form {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          width: 100%;
+        }
+
+        .edit-input {
+          padding: 0.5rem;
+          border: 1px solid var(--accent);
+          border-radius: 4px;
+          background: var(--card-bg);
+          color: var(--text);
+          font-size: 0.875rem;
+        }
+
+        .edit-buttons {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .edit-btn {
+          padding: 0.25rem 0.5rem;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .save-btn {
+          background: var(--accent);
+          color: white;
+        }
+
+        .cancel-btn {
+          background: var(--text-secondary);
+          color: white;
+        }
+
+        .edit-btn:hover {
+          opacity: 0.8;
+        }
+
         @media (max-width: 768px) {
           .apps-grid {
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -214,6 +362,14 @@ const Index = () => {
         {theme === 'light' ? <Moon /> : <Sun />}
       </button>
 
+      <button 
+        className={`edit-toggle ${isEditMode ? 'active' : ''}`} 
+        onClick={toggleEditMode} 
+        aria-label="Toggle edit mode"
+      >
+        <Edit3 />
+      </button>
+
       <div className="container">
         <header className="header">
           <h1>Office App Launcher</h1>
@@ -221,30 +377,87 @@ const Index = () => {
         </header>
 
         <div className="apps-grid">
-          {apps.map((app) => (
-            <a
-              key={app.name}
-              href={app.url}
-              className="app-tile"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="app-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <text x="12" y="16" textAnchor="middle" fontSize="14">
-                    {app.icon}
-                  </text>
-                </svg>
-              </div>
-              <div className="app-name">{app.name}</div>
-            </a>
+          {tiles.map((tile, index) => (
+            <div key={index}>
+              {tile.isEditing ? (
+                <div className="app-tile">
+                  <TileEditForm
+                    tile={tile}
+                    onSave={(name, url) => handleTileSubmit(index, name, url)}
+                    onCancel={() => updateTile(index, { isEditing: false })}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="app-tile"
+                  onClick={() => handleTileClick(tile, index)}
+                >
+                  <div className="app-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <text x="12" y="16" textAnchor="middle" fontSize="14">
+                        {tile.icon}
+                      </text>
+                    </svg>
+                  </div>
+                  <div className="app-name">{tile.name}</div>
+                </div>
+              )}
+            </div>
           ))}
+          
+          {isEditMode && (
+            <div className="app-tile add-tile" onClick={addNewTile}>
+              <div className="app-icon">
+                <Plus size={32} />
+              </div>
+              <div className="app-name">Add</div>
+            </div>
+          )}
         </div>
-<footer className="footer" style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
+
+        <footer className="footer" style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
           Not affiliated with Microsoft. See <a href="https://github.com/jukkan/office" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>GitHub</a> for more info.
         </footer>
       </div>
     </>
+  );
+};
+
+const TileEditForm: React.FC<{
+  tile: AppTile;
+  onSave: (name: string, url: string) => void;
+  onCancel: () => void;
+}> = ({ tile, onSave, onCancel }) => {
+  const [name, setName] = useState(tile.name);
+  const [url, setUrl] = useState(tile.url);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave(name, url);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="edit-form">
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Tile name"
+        className="edit-input"
+        autoFocus
+      />
+      <input
+        type="url"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+        placeholder="URL"
+        className="edit-input"
+      />
+      <div className="edit-buttons">
+        <button type="submit" className="edit-btn save-btn">Save</button>
+        <button type="button" onClick={onCancel} className="edit-btn cancel-btn">Cancel</button>
+      </div>
+    </form>
   );
 };
 
