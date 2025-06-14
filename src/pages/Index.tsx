@@ -35,7 +35,8 @@ const SortableTile: React.FC<{
   onTileClick: (tile: AppTile, index: number) => void;
   onSave: (name: string, url: string, icon: string) => void;
   onCancel: () => void;
-}> = ({ tile, index, isEditMode, onTileClick, onSave, onCancel }) => {
+  onDelete: () => void;
+}> = ({ tile, index, isEditMode, onTileClick, onSave, onCancel, onDelete }) => {
   const {
     attributes,
     listeners,
@@ -66,6 +67,7 @@ const SortableTile: React.FC<{
             tile={tile}
             onSave={onSave}
             onCancel={onCancel}
+            onDelete={onDelete}
           />
         </div>
       ) : (
@@ -174,6 +176,11 @@ const Index = () => {
     const newTiles = tiles.map((tile, i) => 
       i === index ? { ...tile, ...updates } : tile
     );
+    saveTiles(newTiles);
+  };
+
+  const deleteTile = (index: number) => {
+    const newTiles = tiles.filter((_, i) => i !== index);
     saveTiles(newTiles);
   };
 
@@ -446,6 +453,11 @@ const Index = () => {
           color: white;
         }
 
+        .delete-btn {
+          background: #d32f2f;
+          color: white;
+        }
+
         .edit-btn:hover {
           opacity: 0.8;
         }
@@ -499,6 +511,7 @@ const Index = () => {
                   onTileClick={handleTileClick}
                   onSave={(name, url, icon) => handleTileSubmit(index, name, url, icon)}
                   onCancel={() => updateTile(index, { isEditing: false })}
+                  onDelete={() => deleteTile(index)}
                 />
               ))}
               
@@ -526,7 +539,8 @@ const TileEditForm: React.FC<{
   tile: AppTile;
   onSave: (name: string, url: string, icon: string) => void;
   onCancel: () => void;
-}> = ({ tile, onSave, onCancel }) => {
+  onDelete: () => void;
+}> = ({ tile, onSave, onCancel, onDelete }) => {
   const [name, setName] = useState(tile.name);
   const [url, setUrl] = useState(tile.url);
   const [icon, setIcon] = useState(tile.icon);
@@ -564,6 +578,7 @@ const TileEditForm: React.FC<{
       <div className="edit-buttons">
         <button type="submit" className="edit-btn save-btn">Save</button>
         <button type="button" onClick={onCancel} className="edit-btn cancel-btn">Cancel</button>
+        <button type="button" onClick={onDelete} className="edit-btn delete-btn">Delete</button>
       </div>
     </form>
   );
