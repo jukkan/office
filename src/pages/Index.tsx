@@ -1,34 +1,117 @@
-
 import React, { useEffect, useState } from 'react';
 import { Moon, Sun, Edit3, Plus } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface AppTile {
+  id: string;
   name: string;
   icon: string;
   url: string;
   isEditing?: boolean;
 }
 
+const SortableTile: React.FC<{
+  tile: AppTile;
+  index: number;
+  isEditMode: boolean;
+  onTileClick: (tile: AppTile, index: number) => void;
+  onSave: (name: string, url: string) => void;
+  onCancel: () => void;
+}> = ({ tile, index, isEditMode, onTileClick, onSave, onCancel }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: tile.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...(isEditMode ? { ...attributes, ...listeners } : {})}
+    >
+      {tile.isEditing ? (
+        <div className="app-tile">
+          <TileEditForm
+            tile={tile}
+            onSave={onSave}
+            onCancel={onCancel}
+          />
+        </div>
+      ) : (
+        <div
+          className="app-tile"
+          onClick={() => onTileClick(tile, index)}
+          style={{ cursor: isEditMode ? 'grab' : 'pointer' }}
+        >
+          <div className="app-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <text x="12" y="16" textAnchor="middle" fontSize="14">
+                {tile.icon}
+              </text>
+            </svg>
+          </div>
+          <div className="app-name">{tile.name}</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Index = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isEditMode, setIsEditMode] = useState(false);
   const [tiles, setTiles] = useState<AppTile[]>([
-    { name: 'Outlook', icon: '📧', url: 'https://outlook.office.com' },
-    { name: 'Teams', icon: '👥', url: 'https://teams.microsoft.com' },
-    { name: 'Word', icon: '📝', url: 'https://office.com/launch/word' },
-    { name: 'Excel', icon: '🧮', url: 'https://office.com/launch/excel' },
-    { name: 'PowerPoint', icon: '📈', url: 'https://office.com/launch/powerpoint' },
-    { name: 'OneDrive', icon: '☁️', url: 'https://m365.cloud.microsoft/onedrive/' },
-    { name: 'OneNote', icon: '📔', url: 'https://onenote.com' },
-    { name: 'Power BI', icon: '📊', url: 'https://app.powerbi.com/' },
-    { name: 'Power Apps', icon: '⚡', url: 'https://make.powerapps.com/' },
-    { name: 'Power Automate', icon: '🔄', url: 'https://make.powerautomate.com/' },
-    { name: 'To Do', icon: '✅', url: 'https://to-do.office.com/' },
-    { name: 'Planner', icon: '⌛', url: 'https://planner.cloud.microsoft/' },
-    { name: 'Loop', icon: '➰', url: 'https://loop.cloud.microsoft/' },
-    { name: 'Forms', icon: '📋', url: 'https://forms.office.com/' },
-    { name: 'Bookings', icon: '📅', url: 'https://outlook.office.com/bookings/' }
+    { id: '1', name: 'Outlook', icon: '📧', url: 'https://outlook.office.com' },
+    { id: '2', name: 'Teams', icon: '👥', url: 'https://teams.microsoft.com' },
+    { id: '3', name: 'Word', icon: '📝', url: 'https://office.com/launch/word' },
+    { id: '4', name: 'Excel', icon: '🧮', url: 'https://office.com/launch/excel' },
+    { id: '5', name: 'PowerPoint', icon: '📈', url: 'https://office.com/launch/powerpoint' },
+    { id: '6', name: 'OneDrive', icon: '☁️', url: 'https://m365.cloud.microsoft/onedrive/' },
+    { id: '7', name: 'OneNote', icon: '📔', url: 'https://onenote.com' },
+    { id: '8', name: 'Power BI', icon: '📊', url: 'https://app.powerbi.com/' },
+    { id: '9', name: 'Power Apps', icon: '⚡', url: 'https://make.powerapps.com/' },
+    { id: '10', name: 'Power Automate', icon: '🔄', url: 'https://make.powerautomate.com/' },
+    { id: '11', name: 'To Do', icon: '✅', url: 'https://to-do.office.com/' },
+    { id: '12', name: 'Planner', icon: '⌛', url: 'https://planner.cloud.microsoft/' },
+    { id: '13', name: 'Loop', icon: '➰', url: 'https://loop.cloud.microsoft/' },
+    { id: '14', name: 'Forms', icon: '📋', url: 'https://forms.office.com/' },
+    { id: '15', name: 'Bookings', icon: '📅', url: 'https://outlook.office.com/bookings/' }
   ]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     // Get theme from localStorage or fallback to system preference
@@ -39,12 +122,17 @@ const Index = () => {
     setTheme(initialTheme);
     document.documentElement.setAttribute('data-theme', initialTheme);
 
-    // Load tiles from localStorage
+    // Load tiles from localStorage with order preservation
     const savedTiles = localStorage.getItem('tiles');
     if (savedTiles) {
       try {
         const parsedTiles = JSON.parse(savedTiles);
-        setTiles(parsedTiles);
+        // Ensure each tile has an id
+        const tilesWithIds = parsedTiles.map((tile: any, index: number) => ({
+          ...tile,
+          id: tile.id || `tile-${index}`
+        }));
+        setTiles(tilesWithIds);
       } catch (error) {
         console.error('Error parsing saved tiles:', error);
       }
@@ -69,6 +157,7 @@ const Index = () => {
 
   const addNewTile = () => {
     const newTile: AppTile = {
+      id: `tile-${Date.now()}`,
       name: 'New Tile',
       icon: '🆕',
       url: '#',
@@ -95,6 +184,18 @@ const Index = () => {
 
   const handleTileSubmit = (index: number, name: string, url: string) => {
     updateTile(index, { name, url, isEditing: false });
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = tiles.findIndex((tile) => tile.id === active.id);
+      const newIndex = tiles.findIndex((tile) => tile.id === over?.id);
+
+      const newTiles = arrayMove(tiles, oldIndex, newIndex);
+      saveTiles(newTiles);
+    }
   };
 
   return (
@@ -376,44 +477,39 @@ const Index = () => {
           <p>Quick access to your Microsoft Office applications, no Copilot detour needed.</p>
         </header>
 
-        <div className="apps-grid">
-          {tiles.map((tile, index) => (
-            <div key={index}>
-              {tile.isEditing ? (
-                <div className="app-tile">
-                  <TileEditForm
-                    tile={tile}
-                    onSave={(name, url) => handleTileSubmit(index, name, url)}
-                    onCancel={() => updateTile(index, { isEditing: false })}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="app-tile"
-                  onClick={() => handleTileClick(tile, index)}
-                >
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={tiles.map(tile => tile.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="apps-grid">
+              {tiles.map((tile, index) => (
+                <SortableTile
+                  key={tile.id}
+                  tile={tile}
+                  index={index}
+                  isEditMode={isEditMode}
+                  onTileClick={handleTileClick}
+                  onSave={(name, url) => handleTileSubmit(index, name, url)}
+                  onCancel={() => updateTile(index, { isEditing: false })}
+                />
+              ))}
+              
+              {isEditMode && (
+                <div className="app-tile add-tile" onClick={addNewTile}>
                   <div className="app-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <text x="12" y="16" textAnchor="middle" fontSize="14">
-                        {tile.icon}
-                      </text>
-                    </svg>
+                    <Plus size={32} />
                   </div>
-                  <div className="app-name">{tile.name}</div>
+                  <div className="app-name">Add</div>
                 </div>
               )}
             </div>
-          ))}
-          
-          {isEditMode && (
-            <div className="app-tile add-tile" onClick={addNewTile}>
-              <div className="app-icon">
-                <Plus size={32} />
-              </div>
-              <div className="app-name">Add</div>
-            </div>
-          )}
-        </div>
+          </SortableContext>
+        </DndContext>
 
         <footer className="footer" style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
           Not affiliated with Microsoft. See <a href="https://github.com/jukkan/office" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>GitHub</a> for more info.
