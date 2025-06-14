@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun, Edit3, Plus, Delete } from 'lucide-react';
+import { Moon, Sun, Edit3 } from 'lucide-react';
+import TileGrid from "../components/TileGrid";
 
 interface AppTile {
   name: string;
@@ -89,17 +90,22 @@ const Index = () => {
     saveTiles(newTiles);
   };
 
+  // Tile handlers for the grid
   const handleTileClick = (tile: AppTile, index: number) => {
     if (isEditMode) {
       updateTile(index, { isEditing: true });
-    } else if (tile.url !== '#') {
-      window.open(tile.url, '_blank', 'noopener,noreferrer');
+    } else if (tile.url !== "#") {
+      window.open(tile.url, "_blank", "noopener,noreferrer");
     }
   };
 
-  const handleTileSubmit = (index: number, name: string, url: string, icon: string) => {
-    // Prevent saving with empty icon
-    updateTile(index, { name, url, icon: icon || '🆕', isEditing: false });
+  const handleTileSubmit = (
+    index: number,
+    name: string,
+    url: string,
+    icon: string
+  ) => {
+    updateTile(index, { name, url, icon: icon || "🆕", isEditing: false });
   };
 
   return (
@@ -378,125 +384,46 @@ const Index = () => {
       <div className="container">
         <header className="header">
           <h1>Office App Launcher</h1>
-          <p>Quick access to your Microsoft Office applications, no Copilot detour needed.</p>
+          <p>
+            Quick access to your Microsoft Office applications, no Copilot detour needed.
+          </p>
         </header>
 
-        <div className="apps-grid">
-          {tiles.map((tile, index) => (
-            <div key={index}>
-              {tile.isEditing ? (
-                <div className="app-tile">
-                  <TileEditForm
-                    tile={tile}
-                    onSave={(name, url, icon) => handleTileSubmit(index, name, url, icon)}
-                    onCancel={() => updateTile(index, { isEditing: false })}
-                    onDelete={() => deleteTile(index)}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="app-tile"
-                  onClick={() => handleTileClick(tile, index)}
-                >
-                  <div className="app-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <text x="12" y="16" textAnchor="middle" fontSize="14">
-                        {tile.icon}
-                      </text>
-                    </svg>
-                  </div>
-                  <div className="app-name">{tile.name}</div>
-                </div>
-              )}
-            </div>
-          ))}
-          
-          {isEditMode && (
-            <div className="app-tile add-tile" onClick={addNewTile}>
-              <div className="app-icon">
-                <Plus size={32} />
-              </div>
-              <div className="app-name">Add</div>
-            </div>
-          )}
-        </div>
+        <TileGrid
+          tiles={tiles}
+          isEditMode={isEditMode}
+          onTileClick={handleTileClick}
+          onTileSave={handleTileSubmit}
+          onTileCancel={(idx) => updateTile(idx, { isEditing: false })}
+          onTileDelete={deleteTile}
+          onAddTile={addNewTile}
+        />
 
-        <footer className="footer" style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-          Not affiliated with Microsoft. See <a href="https://github.com/jukkan/office" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>GitHub</a> for more info.
+        <footer
+          className="footer"
+          style={{
+            textAlign: "center",
+            marginTop: "2rem",
+            fontSize: "0.875rem",
+            color: "var(--text-secondary)",
+          }}
+        >
+          Not affiliated with Microsoft. See{" "}
+          <a
+            href="https://github.com/jukkan/office"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "var(--accent)",
+              textDecoration: "underline",
+            }}
+          >
+            GitHub
+          </a>{" "}
+          for more info.
         </footer>
       </div>
     </>
-  );
-};
-
-const TileEditForm: React.FC<{
-  tile: AppTile;
-  onSave: (name: string, url: string, icon: string) => void;
-  onCancel: () => void;
-  onDelete: () => void;
-}> = ({ tile, onSave, onCancel, onDelete }) => {
-  const [name, setName] = useState(tile.name);
-  const [url, setUrl] = useState(tile.url);
-  const [icon, setIcon] = useState(tile.icon || '🆕');
-  const [iconError, setIconError] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Add a simple validation for icon (not empty, one char, ideally an emoji)
-    if (!icon || icon.length === 0) {
-      setIconError("Please provide an emoji.");
-      return;
-    }
-    if (icon.length > 2) {
-      setIconError("Please enter just one emoji.");
-      return;
-    }
-    setIconError('');
-    onSave(name, url, icon);
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="edit-form">
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Tile name"
-        className="edit-input"
-        autoFocus
-      />
-      <input
-        type="url"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder="URL"
-        className="edit-input"
-      />
-      <input
-        type="text"
-        value={icon}
-        onChange={(e) => setIcon(e.target.value)}
-        placeholder="Emoji icon"
-        className="edit-input"
-        maxLength={2}
-        style={{ width: "4rem" }}
-        aria-label="Emoji icon"
-      />
-      {iconError && <div style={{ color: "red", fontSize: "0.8rem" }}>{iconError}</div>}
-      <div className="edit-buttons">
-        <button type="submit" className="edit-btn save-btn">Save</button>
-        <button type="button" onClick={onCancel} className="edit-btn cancel-btn">Cancel</button>
-        <button
-          type="button"
-          onClick={onDelete}
-          className="edit-btn"
-          style={{ background: '#ef4444', color: '#fff', marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}
-          aria-label="Delete tile"
-        >
-          <Delete size={16} /> Delete
-        </button>
-      </div>
-    </form>
   );
 };
 
