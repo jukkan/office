@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun, Edit3 } from 'lucide-react';
+import { Moon, Sun, Edit3, FileDown, FileUp } from 'lucide-react';
 // @ts-ignore
 import { export as ExportIcon, import as ImportIcon } from 'lucide-react';
 import TileGrid from "../components/TileGrid";
@@ -425,7 +425,7 @@ const Index = () => {
               style={{ boxShadow: 'var(--shadow)', borderColor: 'var(--accent)' }}
               aria-label="Export JSON"
             >
-              <ExportIcon className="w-4 h-4" />
+              <FileDown className="w-4 h-4" />
               <span className="hidden sm:inline">Export JSON</span>
             </Button>
             <Button
@@ -436,7 +436,7 @@ const Index = () => {
               style={{ boxShadow: 'var(--shadow)', borderColor: 'var(--accent)' }}
               aria-label="Import JSON"
             >
-              <ImportIcon className="w-4 h-4" />
+              <FileUp className="w-4 h-4" />
               <span className="hidden sm:inline">Import JSON</span>
             </Button>
           </>
