@@ -164,6 +164,7 @@ const Index = () => {
   };
 
   const saveTiles = (newTiles: AppTile[]) => {
+    console.log('Saving tiles:', newTiles);
     setTiles(newTiles);
     localStorage.setItem('tiles', JSON.stringify(newTiles));
   };
@@ -183,9 +184,9 @@ const Index = () => {
 
   const updateTile = (index: number, updates: Partial<AppTile>) => {
     console.log('Updating tile at index:', index, 'with updates:', updates);
-    const newTiles = tiles.map((tile, i) => 
-      i === index ? { ...tile, ...updates } : tile
-    );
+    const newTiles = [...tiles];
+    newTiles[index] = { ...newTiles[index], ...updates };
+    console.log('New tiles after update:', newTiles);
     saveTiles(newTiles);
   };
 
