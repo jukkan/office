@@ -162,7 +162,16 @@ const Index = () => {
   };
 
   const toggleEditMode = () => {
-    setIsEditMode(!isEditMode);
+    setIsEditMode(prev => {
+      const next = !prev;
+      if (!next) {
+        // Exiting edit mode; make sure no tile remains in editing state!
+        setTiles(prevTiles =>
+          prevTiles.map(tile => ({ ...tile, isEditing: false }))
+        );
+      }
+      return next;
+    });
   };
 
   const saveTiles = (newTiles: AppTile[]) => {
@@ -201,17 +210,43 @@ const Index = () => {
   };
 
   const handleTileClick = (tile: AppTile, index: number) => {
-    console.log('Main handleTileClick:', tile.name, 'Edit mode:', isEditMode, 'Currently editing:', tile.isEditing);
     if (isEditMode && !tile.isEditing) {
-      console.log('Setting tile to editing mode');
-      updateTile(index, { isEditing: true });
+      // Set only this tile's isEditing to true, all others to false
+      setTiles(prevTiles =>
+        prevTiles.map((t, i) =>
+          i === index
+            ? { ...t, isEditing: true }
+            : { ...t, isEditing: false }
+        )
+      );
     } else if (!isEditMode && tile.url !== '#') {
       window.open(tile.url, '_blank', 'noopener,noreferrer');
     }
   };
 
   const handleTileSubmit = (index: number, name: string, url: string, icon: string) => {
-    updateTile(index, { name, url, icon, isEditing: false, isNew: false });
+    // On save, update this tile, and make sure none are left in editing mode after submit
+    setTiles(prevTiles =>
+      prevTiles.map((tile, i) =>
+        i === index
+          ? { ...tile, name, url, icon, isEditing: false, isNew: false }
+          : { ...tile, isEditing: false }
+      )
+    );
+    // Also persist changes in localStorage
+    setTimeout(() => {
+      // Wait for state update
+      localStorage.setItem(
+        'tiles',
+        JSON.stringify(
+          tiles.map((tile, i) =>
+            i === index
+              ? { ...tile, name, url, icon, isEditing: false, isNew: false }
+              : { ...tile, isEditing: false }
+          )
+        )
+      );
+    }, 0);
   };
 
   const handleTileCancel = (index: number) => {
@@ -221,7 +256,9 @@ const Index = () => {
       deleteTile(index);
     } else {
       // If it's an existing tile, just stop editing
-      updateTile(index, { isEditing: false });
+      setTiles(prevTiles =>
+        prevTiles.map(t => ({ ...t, isEditing: false }))
+      );
     }
   };
 
