@@ -365,6 +365,12 @@ const Index = () => {
           
           .container {
             padding: 1rem 0.5rem;
+            padding-top: 6.5rem; /* Reserve space for buttons on mobile! */
+          }
+        }
+        @media (min-width: 769px) {
+          .container {
+            padding-top: 2rem; /* Default top padding for desktop */
           }
         }
       `}</style>
