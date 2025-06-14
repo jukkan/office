@@ -397,10 +397,41 @@ const Index = () => {
             padding-top: 2rem; /* Default top padding for desktop */
           }
         }
+
+        /* Export/Import buttons Fluent accent style */
+        .fluent-accent-btn {
+          background: var(--accent);
+          color: #fff;
+          border: none;
+          border-radius: 50px;
+          box-shadow: var(--shadow);
+          transition: background 0.15s, box-shadow 0.15s;
+          font-weight: 500;
+        }
+        .fluent-accent-btn:hover, .fluent-accent-btn:focus {
+          background: var(--accent-hover);
+          box-shadow: var(--shadow-hover);
+        }
+        .export-import-row {
+          margin-top: 0.8rem;
+          padding-top: 0.5rem;
+          border-top: 1px solid var(--accent);
+          width: 100%;
+          display: flex;
+          gap: 0.75rem;
+          justify-content: flex-end;
+        }
+        @media (max-width: 500px) {
+          .export-import-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.4rem;
+          }
+        }
       `}</style>
 
-      {/* Buttons container: now a vertical stack */}
-      <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-50">
+      {/* Button controls panel, always vertically stacked */}
+      <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-50 w-max">
 
         {/* First row: theme and edit mode toggle */}
         <div className="flex flex-row gap-3">
@@ -423,13 +454,12 @@ const Index = () => {
 
         {/* Second row: export/import, only visible in edit mode */}
         {isEditMode && (
-          <div className="flex flex-row gap-2 mt-1">
+          <div className="export-import-row">
             <Button
               id="exportBtn"
               onClick={handleExport}
-              variant="outline"
-              className="flex items-center gap-2 px-4 py-2 h-10"
-              style={{ boxShadow: 'var(--shadow)', borderColor: 'var(--accent)' }}
+              variant="default"
+              className="fluent-accent-btn flex items-center gap-2 px-4 py-2 h-10 shadow"
               aria-label="Export JSON"
             >
               <FileDown className="w-4 h-4" />
@@ -438,9 +468,8 @@ const Index = () => {
             <Button
               id="importBtn"
               onClick={handleImport}
-              variant="outline"
-              className="flex items-center gap-2 px-4 py-2 h-10"
-              style={{ boxShadow: 'var(--shadow)', borderColor: 'var(--accent)' }}
+              variant="default"
+              className="fluent-accent-btn flex items-center gap-2 px-4 py-2 h-10 shadow"
               aria-label="Import JSON"
             >
               <FileUp className="w-4 h-4" />
