@@ -399,24 +399,31 @@ const Index = () => {
         }
       `}</style>
 
-      <div className="fixed top-4 right-4 flex items-center gap-3 z-50">
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label="Toggle theme"
-        >
-          {theme === 'light' ? <Moon /> : <Sun />}
-        </button>
-        <button
-          className={`edit-toggle${isEditMode ? ' active' : ''}`}
-          onClick={toggleEditMode}
-          aria-label="Toggle edit mode"
-          style={{ marginRight: isEditMode ? '0' : '0' }}
-        >
-          <Edit3 />
-        </button>
+      {/* Buttons container: now a vertical stack */}
+      <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-50">
+
+        {/* First row: theme and edit mode toggle */}
+        <div className="flex flex-row gap-3">
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? <Moon /> : <Sun />}
+          </button>
+          <button
+            className={`edit-toggle${isEditMode ? ' active' : ''}`}
+            onClick={toggleEditMode}
+            aria-label="Toggle edit mode"
+            style={{ marginRight: isEditMode ? '0' : '0' }}
+          >
+            <Edit3 />
+          </button>
+        </div>
+
+        {/* Second row: export/import, only visible in edit mode */}
         {isEditMode && (
-          <>
+          <div className="flex flex-row gap-2 mt-1">
             <Button
               id="exportBtn"
               onClick={handleExport}
@@ -439,7 +446,7 @@ const Index = () => {
               <FileUp className="w-4 h-4" />
               <span className="hidden sm:inline">Import JSON</span>
             </Button>
-          </>
+          </div>
         )}
       </div>
 
