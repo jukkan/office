@@ -33,7 +33,7 @@ const SortableTile: React.FC<{
   index: number;
   isEditMode: boolean;
   onTileClick: (tile: AppTile, index: number) => void;
-  onSave: (name: string, url: string) => void;
+  onSave: (name: string, url: string, icon: string) => void;
   onCancel: () => void;
 }> = ({ tile, index, isEditMode, onTileClick, onSave, onCancel }) => {
   const {
@@ -185,8 +185,8 @@ const Index = () => {
     }
   };
 
-  const handleTileSubmit = (index: number, name: string, url: string) => {
-    updateTile(index, { name, url, isEditing: false });
+  const handleTileSubmit = (index: number, name: string, url: string, icon: string) => {
+    updateTile(index, { name, url, icon, isEditing: false });
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -497,7 +497,7 @@ const Index = () => {
                   index={index}
                   isEditMode={isEditMode}
                   onTileClick={handleTileClick}
-                  onSave={(name, url) => handleTileSubmit(index, name, url)}
+                  onSave={(name, url, icon) => handleTileSubmit(index, name, url, icon)}
                   onCancel={() => updateTile(index, { isEditing: false })}
                 />
               ))}
@@ -524,15 +524,16 @@ const Index = () => {
 
 const TileEditForm: React.FC<{
   tile: AppTile;
-  onSave: (name: string, url: string) => void;
+  onSave: (name: string, url: string, icon: string) => void;
   onCancel: () => void;
 }> = ({ tile, onSave, onCancel }) => {
   const [name, setName] = useState(tile.name);
   const [url, setUrl] = useState(tile.url);
+  const [icon, setIcon] = useState(tile.icon);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(name, url);
+    onSave(name, url, icon);
   };
 
   return (
@@ -551,6 +552,14 @@ const TileEditForm: React.FC<{
         onChange={(e) => setUrl(e.target.value)}
         placeholder="URL"
         className="edit-input"
+      />
+      <input
+        type="text"
+        value={icon}
+        onChange={(e) => setIcon(e.target.value)}
+        placeholder="Emoji (e.g., 📧)"
+        className="edit-input"
+        maxLength={2}
       />
       <div className="edit-buttons">
         <button type="submit" className="edit-btn save-btn">Save</button>
