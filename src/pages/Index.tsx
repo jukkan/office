@@ -413,8 +413,8 @@ const Index = () => {
           box-shadow: var(--shadow-hover);
         }
         .export-import-row {
-          margin-top: 0.8rem;
-          padding-top: 0.5rem;
+          margin-top: 2.5rem; /* Big enough to always clear the top row */
+          padding-top: 0.6rem;
           border-top: 1px solid var(--accent);
           width: 100%;
           display: flex;
@@ -426,15 +426,15 @@ const Index = () => {
             flex-direction: column;
             align-items: stretch;
             gap: 0.4rem;
+            margin-top: 2.7rem;
           }
         }
       `}</style>
 
-      {/* Button controls panel, always vertically stacked */}
-      <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-50 w-max">
-
-        {/* First row: theme and edit mode toggle */}
-        <div className="flex flex-row gap-3">
+      {/* Controls panel, all vertically stacked, never overlapping */}
+      <div className="fixed top-4 right-4 flex flex-col items-end z-50 w-max">
+        {/* 1st row: Theme and Edit toggles */}
+        <div className="flex flex-row gap-3 w-full">
           <button
             className="theme-toggle"
             onClick={toggleTheme}
@@ -446,13 +446,11 @@ const Index = () => {
             className={`edit-toggle${isEditMode ? ' active' : ''}`}
             onClick={toggleEditMode}
             aria-label="Toggle edit mode"
-            style={{ marginRight: isEditMode ? '0' : '0' }}
           >
             <Edit3 />
           </button>
         </div>
-
-        {/* Second row: export/import, only visible in edit mode */}
+        {/* 2nd row: export/import, only visible in edit mode */}
         {isEditMode && (
           <div className="export-import-row">
             <Button
