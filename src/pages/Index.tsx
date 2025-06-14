@@ -26,6 +26,7 @@ interface AppTile {
   icon: string;
   url: string;
   isEditing?: boolean;
+  isNew?: boolean; // Track if this is a newly created tile
 }
 
 const SortableTile: React.FC<{
@@ -58,6 +59,7 @@ const SortableTile: React.FC<{
   const handleTileClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log('SortableTile click:', tile.name, 'Edit mode:', isEditMode, 'Currently editing:', tile.isEditing);
     onTileClick(tile, index);
   };
 
@@ -172,13 +174,15 @@ const Index = () => {
       name: 'New Tile',
       icon: '🆕',
       url: '#',
-      isEditing: true
+      isEditing: true,
+      isNew: true // Mark as new tile
     };
     const newTiles = [...tiles, newTile];
     saveTiles(newTiles);
   };
 
   const updateTile = (index: number, updates: Partial<AppTile>) => {
+    console.log('Updating tile at index:', index, 'with updates:', updates);
     const newTiles = tiles.map((tile, i) => 
       i === index ? { ...tile, ...updates } : tile
     );
@@ -191,8 +195,9 @@ const Index = () => {
   };
 
   const handleTileClick = (tile: AppTile, index: number) => {
-    console.log('Tile clicked:', tile.name, 'Edit mode:', isEditMode, 'Currently editing:', tile.isEditing);
+    console.log('Main handleTileClick:', tile.name, 'Edit mode:', isEditMode, 'Currently editing:', tile.isEditing);
     if (isEditMode && !tile.isEditing) {
+      console.log('Setting tile to editing mode');
       updateTile(index, { isEditing: true });
     } else if (!isEditMode && tile.url !== '#') {
       window.open(tile.url, '_blank', 'noopener,noreferrer');
@@ -200,7 +205,18 @@ const Index = () => {
   };
 
   const handleTileSubmit = (index: number, name: string, url: string, icon: string) => {
-    updateTile(index, { name, url, icon, isEditing: false });
+    updateTile(index, { name, url, icon, isEditing: false, isNew: false });
+  };
+
+  const handleTileCancel = (index: number) => {
+    const tile = tiles[index];
+    if (tile.isNew) {
+      // If it's a new tile, delete it entirely
+      deleteTile(index);
+    } else {
+      // If it's an existing tile, just stop editing
+      updateTile(index, { isEditing: false });
+    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -517,7 +533,7 @@ const Index = () => {
                   isEditMode={isEditMode}
                   onTileClick={handleTileClick}
                   onSave={(name, url, icon) => handleTileSubmit(index, name, url, icon)}
-                  onCancel={() => updateTile(index, { isEditing: false })}
+                  onCancel={() => handleTileCancel(index)}
                   onDelete={() => deleteTile(index)}
                 />
               ))}
