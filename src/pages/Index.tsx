@@ -56,6 +56,8 @@ const SortableTile: React.FC<{
   // Only apply drag handlers when in edit mode AND not currently editing this tile
   const shouldEnableDrag = isEditMode && !tile.isEditing;
 
+  console.log(`SortableTile ${tile.name}: isEditing=${tile.isEditing}, isEditMode=${isEditMode}`);
+
   const handleTileClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -184,10 +186,13 @@ const Index = () => {
 
   const updateTile = (index: number, updates: Partial<AppTile>) => {
     console.log('Updating tile at index:', index, 'with updates:', updates);
-    const newTiles = [...tiles];
-    newTiles[index] = { ...newTiles[index], ...updates };
-    console.log('New tiles after update:', newTiles);
-    saveTiles(newTiles);
+    setTiles(prevTiles => {
+      const newTiles = [...prevTiles];
+      newTiles[index] = { ...newTiles[index], ...updates };
+      console.log('New tiles after update:', newTiles);
+      localStorage.setItem('tiles', JSON.stringify(newTiles));
+      return newTiles;
+    });
   };
 
   const deleteTile = (index: number) => {
@@ -234,6 +239,7 @@ const Index = () => {
 
   return (
     <>
+      {/* ... keep existing code (styles) */}
       <style>{`
         * {
           margin: 0;
