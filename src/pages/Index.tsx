@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun, Edit3, Plus } from 'lucide-react';
+import { Moon, Sun, Edit3, Plus, Delete } from 'lucide-react';
 
 interface AppTile {
   name: string;
@@ -81,6 +81,11 @@ const Index = () => {
     const newTiles = tiles.map((tile, i) => 
       i === index ? { ...tile, ...updates } : tile
     );
+    saveTiles(newTiles);
+  };
+
+  const deleteTile = (index: number) => {
+    const newTiles = tiles.filter((_, i) => i !== index);
     saveTiles(newTiles);
   };
 
@@ -385,6 +390,7 @@ const Index = () => {
                     tile={tile}
                     onSave={(name, url, icon) => handleTileSubmit(index, name, url, icon)}
                     onCancel={() => updateTile(index, { isEditing: false })}
+                    onDelete={() => deleteTile(index)}
                   />
                 </div>
               ) : (
@@ -427,7 +433,8 @@ const TileEditForm: React.FC<{
   tile: AppTile;
   onSave: (name: string, url: string, icon: string) => void;
   onCancel: () => void;
-}> = ({ tile, onSave, onCancel }) => {
+  onDelete: () => void;
+}> = ({ tile, onSave, onCancel, onDelete }) => {
   const [name, setName] = useState(tile.name);
   const [url, setUrl] = useState(tile.url);
   const [icon, setIcon] = useState(tile.icon || '🆕');
@@ -479,6 +486,15 @@ const TileEditForm: React.FC<{
       <div className="edit-buttons">
         <button type="submit" className="edit-btn save-btn">Save</button>
         <button type="button" onClick={onCancel} className="edit-btn cancel-btn">Cancel</button>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="edit-btn"
+          style={{ background: '#ef4444', color: '#fff', marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}
+          aria-label="Delete tile"
+        >
+          <Delete size={16} /> Delete
+        </button>
       </div>
     </form>
   );
