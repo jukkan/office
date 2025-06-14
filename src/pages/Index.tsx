@@ -51,11 +51,14 @@ const SortableTile: React.FC<{
     opacity: isDragging ? 0.5 : 1,
   };
 
+  // Only apply drag handlers when in edit mode AND not currently editing this tile
+  const shouldEnableDrag = isEditMode && !tile.isEditing;
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...(isEditMode ? { ...attributes, ...listeners } : {})}
+      {...(shouldEnableDrag ? { ...attributes, ...listeners } : {})}
     >
       {tile.isEditing ? (
         <div className="app-tile">
@@ -69,7 +72,7 @@ const SortableTile: React.FC<{
         <div
           className="app-tile"
           onClick={() => onTileClick(tile, index)}
-          style={{ cursor: isEditMode ? 'grab' : 'pointer' }}
+          style={{ cursor: isEditMode && !tile.isEditing ? 'grab' : 'pointer' }}
         >
           <div className="app-icon">
             <svg viewBox="0 0 24 24" fill="currentColor">
