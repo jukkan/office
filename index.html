@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,56 +9,8 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Export/Import Buttons: Only shown in Edit mode, assumed here as always rendered for static index.html; in real app, you would conditionally render -->
-    <div style="display: flex; gap: 8px; margin: 1rem;">
-      <button id="exportBtn">Export JSON</button>
-      <button id="importBtn">Import JSON</button>
-    </div>
+    <!-- No static Export/Import buttons: now rendered via React in Edit mode. -->
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      // Helper to get tiles from storage
-      function getTilesArray() {
-        const t = localStorage.getItem('tiles');
-        try {
-          return t ? JSON.parse(t) : [];
-        } catch {
-          return [];
-        }
-      }
-      // Helper to save tiles and signal re-render (only for demonstration)
-      function setTilesArray(arr) {
-        localStorage.setItem('tiles', JSON.stringify(arr));
-        // If there's a main React render function, trigger it here if needed (pseudo-code):
-        // renderTiles();
-        // For this template, reload to reflect changes in preview.
-        location.reload();
-      }
-
-      const exportBtn = document.getElementById('exportBtn');
-      const importBtn = document.getElementById('importBtn');
-
-      if (exportBtn) {
-        exportBtn.addEventListener('click', async () => {
-          const tilesArray = getTilesArray();
-          const json = JSON.stringify(tilesArray);
-          await navigator.clipboard.writeText(json);
-          alert('Tiles JSON copied to clipboard');
-        });
-      }
-
-      if (importBtn) {
-        importBtn.addEventListener('click', () => {
-          const input = prompt('Paste tiles JSON to import:');
-          if (!input) return;
-          try {
-            const parsed = JSON.parse(input);
-            setTilesArray(parsed);
-          } catch {
-            alert('Invalid JSON – import failed');
-          }
-        });
-      }
-    </script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {

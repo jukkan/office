@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Moon, Sun, Edit3 } from 'lucide-react';
+import { Moon, Sun, Edit3, Import, Export } from 'lucide-react';
 import TileGrid from "../components/TileGrid";
+import { Button } from "../components/ui/button";
 
 interface AppTile {
   name: string;
@@ -106,6 +107,27 @@ const Index = () => {
     icon: string
   ) => {
     updateTile(index, { name, url, icon: icon || "🆕", isEditing: false });
+  };
+
+  // Export/Import Handlers ---
+  const handleExport = async () => {
+    const json = JSON.stringify(tiles);
+    await navigator.clipboard.writeText(json);
+    alert('Tiles JSON copied to clipboard');
+  };
+
+  const handleImport = () => {
+    const input = prompt('Paste tiles JSON to import:');
+    if (!input) return;
+    try {
+      const parsed = JSON.parse(input);
+      setTiles(parsed);
+      localStorage.setItem('tiles', input);
+      // forcibly reload, like the template
+      window.location.reload();
+    } catch {
+      alert('Invalid JSON – import failed');
+    }
   };
 
   return (
@@ -375,17 +397,49 @@ const Index = () => {
         }
       `}</style>
 
-      <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-        {theme === 'light' ? <Moon /> : <Sun />}
-      </button>
-
-      <button 
-        className={`edit-toggle ${isEditMode ? 'active' : ''}`} 
-        onClick={toggleEditMode} 
-        aria-label="Toggle edit mode"
-      >
-        <Edit3 />
-      </button>
+      <div className="fixed top-4 right-4 flex items-center gap-3 z-50">
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+        >
+          {theme === 'light' ? <Moon /> : <Sun />}
+        </button>
+        <button
+          className={`edit-toggle${isEditMode ? ' active' : ''}`}
+          onClick={toggleEditMode}
+          aria-label="Toggle edit mode"
+          style={{ marginRight: isEditMode ? '0' : '0' }}
+        >
+          <Edit3 />
+        </button>
+        {isEditMode && (
+          <>
+            <Button
+              id="exportBtn"
+              onClick={handleExport}
+              variant="outline"
+              className="flex items-center gap-2 px-4 py-2 h-10"
+              style={{ boxShadow: 'var(--shadow)', borderColor: 'var(--accent)' }}
+              aria-label="Export JSON"
+            >
+              <Export className="w-4 h-4" />
+              <span className="hidden sm:inline">Export JSON</span>
+            </Button>
+            <Button
+              id="importBtn"
+              onClick={handleImport}
+              variant="outline"
+              className="flex items-center gap-2 px-4 py-2 h-10"
+              style={{ boxShadow: 'var(--shadow)', borderColor: 'var(--accent)' }}
+              aria-label="Import JSON"
+            >
+              <Import className="w-4 h-4" />
+              <span className="hidden sm:inline">Import JSON</span>
+            </Button>
+          </>
+        )}
+      </div>
 
       <div className="container">
         <header className="header">
