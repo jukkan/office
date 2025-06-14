@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Moon, Sun, Edit3, Plus } from 'lucide-react';
 
@@ -93,8 +92,9 @@ const Index = () => {
     }
   };
 
-  const handleTileSubmit = (index: number, name: string, url: string) => {
-    updateTile(index, { name, url, isEditing: false });
+  const handleTileSubmit = (index: number, name: string, url: string, icon: string) => {
+    // Prevent saving with empty icon
+    updateTile(index, { name, url, icon: icon || '🆕', isEditing: false });
   };
 
   return (
@@ -383,7 +383,7 @@ const Index = () => {
                 <div className="app-tile">
                   <TileEditForm
                     tile={tile}
-                    onSave={(name, url) => handleTileSubmit(index, name, url)}
+                    onSave={(name, url, icon) => handleTileSubmit(index, name, url, icon)}
                     onCancel={() => updateTile(index, { isEditing: false })}
                   />
                 </div>
@@ -425,15 +425,27 @@ const Index = () => {
 
 const TileEditForm: React.FC<{
   tile: AppTile;
-  onSave: (name: string, url: string) => void;
+  onSave: (name: string, url: string, icon: string) => void;
   onCancel: () => void;
 }> = ({ tile, onSave, onCancel }) => {
   const [name, setName] = useState(tile.name);
   const [url, setUrl] = useState(tile.url);
+  const [icon, setIcon] = useState(tile.icon || '🆕');
+  const [iconError, setIconError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(name, url);
+    // Add a simple validation for icon (not empty, one char, ideally an emoji)
+    if (!icon || icon.length === 0) {
+      setIconError("Please provide an emoji.");
+      return;
+    }
+    if (icon.length > 2) {
+      setIconError("Please enter just one emoji.");
+      return;
+    }
+    setIconError('');
+    onSave(name, url, icon);
   };
 
   return (
@@ -453,6 +465,17 @@ const TileEditForm: React.FC<{
         placeholder="URL"
         className="edit-input"
       />
+      <input
+        type="text"
+        value={icon}
+        onChange={(e) => setIcon(e.target.value)}
+        placeholder="Emoji icon"
+        className="edit-input"
+        maxLength={2}
+        style={{ width: "4rem" }}
+        aria-label="Emoji icon"
+      />
+      {iconError && <div style={{ color: "red", fontSize: "0.8rem" }}>{iconError}</div>}
       <div className="edit-buttons">
         <button type="submit" className="edit-btn save-btn">Save</button>
         <button type="button" onClick={onCancel} className="edit-btn cancel-btn">Cancel</button>
