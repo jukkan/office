@@ -1,3 +1,19 @@
+name: Deploy to offi.ceo VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy on Push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -6,24 +22,23 @@
           key: ${{ secrets.VPS_KEY }}
           script: |
             set -e
+
             cd ${{ secrets.VPS_PROJECT_PATH }}
+
+            echo "➡️ Ensure GitHub in known_hosts"
             ssh-keyscan github.com >> ~/.ssh/known_hosts
 
             echo "➡️ Fetch & reset to origin/main"
             git fetch --all
             git reset --hard origin/main
 
--           echo "➡️ Install deps"
--           npm install
-+           echo "➡️ Install deps"
-+           bash -lc "npm install"
+            echo "➡️ Install deps"
+            bash -lc "npm install"
 
             echo "➡️ Clean old build"
             rm -rf dist
 
--           echo "➡️ Build fresh"
--           npm run build
-+           echo "➡️ Build fresh"
-+           bash -lc "npm run build"
+            echo "➡️ Build fresh"
+            bash -lc "npm run build"
 
             echo "✅ Deploy complete!"
