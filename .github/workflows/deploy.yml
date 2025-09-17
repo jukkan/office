@@ -7,7 +7,6 @@ on:
 
 jobs:
   deploy:
-    name: Deploy on Push
     runs-on: ubuntu-latest
 
     steps:
@@ -21,24 +20,27 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            set -e
+            # wrap everything in a login shell so ~/.bashrc / nvm etc. is loaded
+            bash -lc '
+              set -e
 
-            cd ${{ secrets.VPS_PROJECT_PATH }}
+              cd ${{ secrets.VPS_PROJECT_PATH }}
 
-            echo "➡️ Ensure GitHub in known_hosts"
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
+              echo "➡️ Ensure GitHub in known_hosts"
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-            echo "➡️ Fetch & reset to origin/main"
-            git fetch --all
-            git reset --hard origin/main
+              echo "➡️ Fetch & reset to origin/main"
+              git fetch --all
+              git reset --hard origin/main
 
-            echo "➡️ Install deps"
-            bash -lc "npm install"
+              echo "➡️ Install deps"
+              npm install
 
-            echo "➡️ Clean old build"
-            rm -rf dist
+              echo "➡️ Clean old build"
+              rm -rf dist
 
-            echo "➡️ Build fresh"
-            bash -lc "npm run build"
+              echo "➡️ Build fresh"
+              npm run build
 
-            echo "✅ Deploy complete!"
+              echo "✅ Deploy complete!"
+            '
