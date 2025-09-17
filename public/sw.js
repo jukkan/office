@@ -6,8 +6,8 @@ const urlsToCache = [
   '/favicon.ico'
 ];
 
-// Install event - cache static assets
 self.addEventListener('install', (event) => {
+  // skip waiting to activate new SW immediately and cache static assets
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
@@ -19,8 +19,8 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
+  // immediately take control of all pages and clean up old caches
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
