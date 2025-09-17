@@ -20,33 +20,27 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            set -e
+            # everything inside this single bash -lc runs as a login shell
+            bash -lc '
+              set -e
 
-            # Load your user profile so npm is in PATH
-            if [ -f ~/.bash_profile ]; then
-              source ~/.bash_profile
-            elif [ -f ~/.bashrc ]; then
-              source ~/.bashrc
-            elif [ -f ~/.profile ]; then
-              source ~/.profile
-            fi
+              cd ${{ secrets.VPS_PROJECT_PATH }}
 
-            cd ${{ secrets.VPS_PROJECT_PATH }}
+              echo "➡️ Ensure GitHub in known_hosts"
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-            echo "➡️ Ensure GitHub in known_hosts"
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
+              echo "➡️ Fetch & reset to origin/main"
+              git fetch --all
+              git reset --hard origin/main
 
-            echo "➡️ Fetch & reset to origin/main"
-            git fetch --all
-            git reset --hard origin/main
+              echo "➡️ Install deps"
+              npm install
 
-            echo "➡️ Install deps"
-            npm install
+              echo "➡️ Clean old build"
+              rm -rf dist
 
-            echo "➡️ Clean old build"
-            rm -rf dist
+              echo "➡️ Build fresh"
+              npm run build
 
-            echo "➡️ Build fresh"
-            npm run build
-
-            echo "✅ Deploy complete!"
+              echo "✅ Deploy complete!"
+            '
