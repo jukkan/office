@@ -187,6 +187,24 @@ const OfficeLauncherStyles = () => (
     .add-tile:hover {
       background: var(--card-bg);
     }
+    .download-apps-button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+    .download-apps-btn {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      box-shadow: var(--shadow);
+      transition: all 0.2s ease;
+    }
+    .download-apps-btn:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
     .edit-form {
       display: flex;
       flex-direction: column;
