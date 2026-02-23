@@ -4,6 +4,8 @@ import TileGrid from "../components/TileGrid";
 import OfficeLauncherStyles from "./OfficeLauncherStyles";
 import OfficeLauncherControls from "./OfficeLauncherControls";
 import { defaultTiles, AppTile } from "./tilesDefault";
+import { Button } from "../components/ui/button";
+import { Download } from "lucide-react";
 
 const Index = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -128,6 +130,23 @@ const Index = () => {
           <p>
             Quick access to your Microsoft Office applications, no Copilot detour needed.
           </p>
+          <div className="mt-6">
+            <Button
+              variant="outline"
+              size="lg"
+              asChild
+            >
+              <a
+                href="https://portal.office.com/account/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Download apps
+              </a>
+            </Button>
+          </div>
         </header>
 
         <TileGrid
