@@ -130,11 +130,24 @@ const Index = () => {
           <p>
             Quick access to your Microsoft Office applications, no Copilot detour needed.
           </p>
-          <div className="mt-6">
+        </header>
+
+        <div style={{ position: "relative" }}>
+          <TileGrid
+            tiles={tiles}
+            isEditMode={isEditMode}
+            onTileClick={handleTileClick}
+            onTileSave={handleTileSubmit}
+            onTileCancel={(idx) => updateTile(idx, { isEditing: false })}
+            onTileDelete={deleteTile}
+            onAddTile={addNewTile}
+          />
+          <div className="download-apps-button">
             <Button
               variant="outline"
               size="lg"
               asChild
+              className="download-apps-btn"
             >
               <a
                 href="https://portal.office.com/account/"
@@ -147,17 +160,7 @@ const Index = () => {
               </a>
             </Button>
           </div>
-        </header>
-
-        <TileGrid
-          tiles={tiles}
-          isEditMode={isEditMode}
-          onTileClick={handleTileClick}
-          onTileSave={handleTileSubmit}
-          onTileCancel={(idx) => updateTile(idx, { isEditing: false })}
-          onTileDelete={deleteTile}
-          onAddTile={addNewTile}
-        />
+        </div>
 
         <footer
           className="footer"
