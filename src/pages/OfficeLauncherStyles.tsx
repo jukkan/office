@@ -187,10 +187,18 @@ const OfficeLauncherStyles = () => (
     .add-tile:hover {
       background: var(--card-bg);
     }
+    .footer {
+      margin-top: 3rem;
+    }
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
     .download-apps-button {
-      position: absolute;
-      bottom: 0;
-      left: 0;
+      display: flex;
+      justify-content: center;
     }
     .download-apps-btn {
       background: var(--card-bg);
@@ -204,6 +212,11 @@ const OfficeLauncherStyles = () => (
       color: white;
       transform: translateY(-2px);
       box-shadow: var(--shadow-hover);
+    }
+    .footer-text {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
     }
     .edit-form {
       display: flex;
