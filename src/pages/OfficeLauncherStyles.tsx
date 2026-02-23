@@ -215,7 +215,7 @@ const OfficeLauncherStyles = () => (
     }
     .footer-text {
       text-align: center;
-      fontSize: 0.875rem;
+      font-size: 0.875rem;
       color: var(--text-secondary);
     }
     .edit-form {
