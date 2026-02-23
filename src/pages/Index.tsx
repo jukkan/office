@@ -132,58 +132,52 @@ const Index = () => {
           </p>
         </header>
 
-        <div style={{ position: "relative" }}>
-          <TileGrid
-            tiles={tiles}
-            isEditMode={isEditMode}
-            onTileClick={handleTileClick}
-            onTileSave={handleTileSubmit}
-            onTileCancel={(idx) => updateTile(idx, { isEditing: false })}
-            onTileDelete={deleteTile}
-            onAddTile={addNewTile}
-          />
-          <div className="download-apps-button">
-            <Button
-              variant="outline"
-              size="lg"
-              asChild
-              className="download-apps-btn"
-            >
+        <TileGrid
+          tiles={tiles}
+          isEditMode={isEditMode}
+          onTileClick={handleTileClick}
+          onTileSave={handleTileSubmit}
+          onTileCancel={(idx) => updateTile(idx, { isEditing: false })}
+          onTileDelete={deleteTile}
+          onAddTile={addNewTile}
+        />
+
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="download-apps-button">
+              <Button
+                variant="outline"
+                size="lg"
+                asChild
+                className="download-apps-btn"
+              >
+                <a
+                  href="https://portal.office.com/account/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <Download className="w-5 h-5" />
+                  Download apps
+                </a>
+              </Button>
+            </div>
+            <div className="footer-text">
+              Not affiliated with Microsoft. See{" "}
               <a
-                href="https://portal.office.com/account/"
+                href="https://github.com/jukkan/office"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2"
+                style={{
+                  color: "var(--accent)",
+                  textDecoration: "underline",
+                }}
               >
-                <Download className="w-5 h-5" />
-                Download apps
-              </a>
-            </Button>
+                GitHub
+              </a>{" "}
+              for more info.
+            </div>
           </div>
-        </div>
-
-        <footer
-          className="footer"
-          style={{
-            textAlign: "center",
-            marginTop: "2rem",
-            fontSize: "0.875rem",
-            color: "var(--text-secondary)",
-          }}
-        >
-          Not affiliated with Microsoft. See{" "}
-          <a
-            href="https://github.com/jukkan/office"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: "var(--accent)",
-              textDecoration: "underline",
-            }}
-          >
-            GitHub
-          </a>{" "}
-          for more info.
         </footer>
       </div>
     </>
