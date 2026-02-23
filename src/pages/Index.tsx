@@ -130,15 +130,21 @@ const Index = () => {
           <p>
             Quick access to your Microsoft Office applications, no Copilot detour needed.
           </p>
-          <div style={{ marginTop: "1.5rem" }}>
+          <div className="mt-6">
             <Button
               variant="outline"
               size="lg"
-              onClick={() => window.open('https://portal.office.com/account/', '_blank', 'noopener,noreferrer')}
-              className="flex items-center gap-2"
+              asChild
             >
-              <Download className="w-5 h-5" />
-              Download apps
+              <a
+                href="https://portal.office.com/account/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Download apps
+              </a>
             </Button>
           </div>
         </header>
