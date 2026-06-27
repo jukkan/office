@@ -7,6 +7,8 @@ interface AppTile {
   name: string;
   icon: string;
   url: string;
+  createUrl?: string;
+  shortcut?: string;
   isEditing?: boolean;
 }
 
@@ -14,7 +16,7 @@ interface TileGridProps {
   tiles: AppTile[];
   isEditMode: boolean;
   onTileClick: (tile: AppTile, idx: number) => void;
-  onTileSave: (idx: number, name: string, url: string, icon: string) => void;
+  onTileSave: (idx: number, name: string, url: string, icon: string, createUrl?: string) => void;
   onTileCancel: (idx: number) => void;
   onTileDelete: (idx: number) => void;
   onAddTile: () => void;
@@ -36,8 +38,8 @@ const TileGrid: React.FC<TileGridProps> = ({
           <div className="app-tile">
             <TileEditForm
               tile={tile}
-              onSave={(name, url, icon) =>
-                onTileSave(index, name, url, icon)
+              onSave={(name, url, icon, createUrl) =>
+                onTileSave(index, name, url, icon, createUrl)
               }
               onCancel={() => onTileCancel(index)}
               onDelete={() => onTileDelete(index)}
@@ -48,6 +50,19 @@ const TileGrid: React.FC<TileGridProps> = ({
             className="app-tile"
             onClick={() => onTileClick(tile, index)}
           >
+            {tile.createUrl && (
+              <button
+                className="create-btn"
+                title={`New ${tile.name}`}
+                aria-label={`Create new ${tile.name}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(tile.createUrl, '_blank', 'noopener,noreferrer');
+                }}
+              >
+                +
+              </button>
+            )}
             <div className="app-icon">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <text

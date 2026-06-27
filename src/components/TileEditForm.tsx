@@ -7,8 +7,9 @@ export interface TileEditFormProps {
     name: string;
     url: string;
     icon: string;
+    createUrl?: string;
   };
-  onSave: (name: string, url: string, icon: string) => void;
+  onSave: (name: string, url: string, icon: string, createUrl?: string) => void;
   onCancel: () => void;
   onDelete: () => void;
 }
@@ -22,6 +23,7 @@ const TileEditForm: React.FC<TileEditFormProps> = ({
   const [name, setName] = useState(tile.name);
   const [url, setUrl] = useState(tile.url);
   const [icon, setIcon] = useState(tile.icon || "🆕");
+  const [createUrl, setCreateUrl] = useState(tile.createUrl || "");
   const [iconError, setIconError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,7 +37,7 @@ const TileEditForm: React.FC<TileEditFormProps> = ({
       return;
     }
     setIconError("");
-    onSave(name, url, icon);
+    onSave(name, url, icon, createUrl || undefined);
   };
 
   return (
@@ -53,6 +55,13 @@ const TileEditForm: React.FC<TileEditFormProps> = ({
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="URL"
+        className="edit-input"
+      />
+      <input
+        type="url"
+        value={createUrl}
+        onChange={(e) => setCreateUrl(e.target.value)}
+        placeholder="Quick-create URL (optional)"
         className="edit-input"
       />
       <input

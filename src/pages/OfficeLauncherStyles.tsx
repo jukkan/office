@@ -272,6 +272,69 @@ const OfficeLauncherStyles = () => (
       }
     }
 
+    /* Narrow panel layout — Vivaldi web panels and similar sidebars */
+    @media (max-width: 480px) {
+      .header {
+        margin-bottom: 1.25rem;
+      }
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      .header p {
+        font-size: 0.875rem;
+      }
+      .container {
+        padding: 0.75rem 0.5rem;
+        padding-top: 5.5rem;
+      }
+      .apps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.75rem;
+      }
+      .app-tile {
+        padding: 0.875rem 0.5rem;
+      }
+      .optional-section {
+        margin-top: 1.25rem;
+      }
+      .section-tiles-grid {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+      }
+      .footer {
+        margin-top: 1.5rem;
+      }
+      .shortcut-overlay-card {
+        min-width: 0;
+        width: 95vw;
+        padding: 1rem;
+      }
+      .shortcut-overlay-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Very narrow — panels narrower than ~320px */
+    @media (max-width: 320px) {
+      .header h1 {
+        font-size: 1.2rem;
+      }
+      .apps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      }
+      .section-tiles-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      }
+    }
+
+    /* Always show quick-create button on touch/no-hover devices (web panels) */
+    @media (hover: none) {
+      .create-btn {
+        opacity: 0.85;
+      }
+    }
+
     /* Export/Import buttons Fluent accent style */
     .fluent-accent-btn {
       background: var(--accent);
@@ -298,9 +361,202 @@ const OfficeLauncherStyles = () => (
         flex-direction: column;
         align-items: stretch;
         gap: 0.4rem;
-        margin-top: 90px; /* Extra for mobile */
+        margin-top: 90px;
       }
     }
+
+    /* Quick-create button */
+    .create-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .app-tile:hover .create-btn { opacity: 1; }
+
+    /* Keyboard shortcut overlay */
+    .shortcut-overlay-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .shortcut-overlay-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      min-width: 320px;
+      max-width: 520px;
+      width: 90vw;
+    }
+    .shortcut-overlay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+    .shortcut-overlay-close {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      line-height: 1;
+      padding: 0.25rem;
+    }
+    .shortcut-overlay-close:hover { color: var(--text); }
+    .shortcut-overlay-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem 1.5rem;
+    }
+    .shortcut-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    kbd.shortcut-key {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 6px;
+      border: 1.5px solid var(--text-secondary);
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--bg-secondary);
+      color: var(--text);
+      font-family: monospace;
+    }
+    .shortcut-icon { font-size: 1rem; }
+    .shortcut-name { color: var(--text-secondary); }
+
+    /* Collapsible optional sections */
+    .optional-section {
+      max-width: 800px;
+      margin: 2rem auto 0;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.625rem 0.75rem;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.15s, color 0.15s;
+      text-align: left;
+    }
+    .section-header:hover {
+      background: var(--card-bg);
+      color: var(--text);
+    }
+    .section-header-icon { font-size: 1rem; }
+    .section-header-label { flex: 1; }
+    .section-chevron {
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .section-chevron.open { transform: rotate(180deg); }
+    .section-tiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+    .section-tile {
+      text-decoration: none;
+      font-size: 0.875rem;
+      padding: 0.875rem 0.75rem;
+    }
+    .section-tile .app-name { font-size: 0.875rem; }
+
+    /* Environment switcher */
+    .env-switcher {
+      padding: 0.75rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .env-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .env-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .env-select {
+      flex: 1;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 0.875rem;
+    }
+    .env-add-btn {
+      padding: 0.4rem 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .env-add-btn:hover { background: var(--accent-hover); }
+    .env-add-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .env-hint {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .env-hint a { color: var(--accent); }
   `}</style>
 );
 

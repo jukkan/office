@@ -2,7 +2,7 @@
 
 **Goal**: Evolve from a waffle-menu replacement into the best possible Microsoft 365 home page — one that shows users what *they* care about, not what Microsoft wants to promote.
 
-**Current version**: 1.2.0 — configurable app launcher, no auth, localStorage only
+**Current version**: 1.3.0 — configurable app launcher with keyboard shortcuts, quick-create links, admin portals, and Power Platform environment switcher. No auth, localStorage only.
 
 ---
 
@@ -14,10 +14,9 @@ Technically: still a static app hosted on GitHub Pages. Microsoft Graph API runs
 
 ---
 
-## Phase 1 — Better launcher (no auth required)
-*Incremental improvements on top of v1.2.0. Ship quickly to justify domain renewal.*
+## Phase 1 — Better launcher (no auth required) ✅ Done in v1.3.0
 
-### 1.1 Quick-create deep links
+### 1.1 Quick-create deep links ✅
 Replace pure launch URLs with action-oriented shortcuts where possible:
 - New Word document → `https://word.new`
 - New Excel sheet → `https://excel.new`
@@ -25,16 +24,16 @@ Replace pure launch URLs with action-oriented shortcuts where possible:
 - New Teams meeting → deep link to calendar compose
 - Each tile gets an optional secondary "New" badge/button alongside the launch link
 
-### 1.2 Keyboard navigation
+### 1.2 Keyboard navigation ✅
 - Single-key shortcuts when no input is focused: `O` = Outlook, `T` = Teams, `W` = Word, `E` = Excel, `P` = PowerPoint, `D` = OneDrive, etc.
 - `?` opens shortcut cheat-sheet overlay
 - Makes the page genuinely faster than clicking the waffle
 
-### 1.3 IT Admin portals section
+### 1.3 IT Admin portals section ✅
 An optional second tile section for IT pros, hidden by default, toggled on from settings:
 - Microsoft 365 Admin Center, Entra ID, Purview, Security & Compliance, Power Platform Admin Center (PPAC), Azure Portal, Intune, Exchange Admin, Teams Admin
 
-### 1.4 Power Platform section
+### 1.4 Power Platform section ✅
 A dedicated tile section for Power Platform makers and admins — one of the most underserved groups when it comes to navigation:
 - Quick links to the main makers: Power Apps (`make.powerapps.com`), Power Automate (`make.powerautomate.com`), Power Pages (`make.powerpages.microsoft.com`), Copilot Studio (`copilotstudio.microsoft.com`)
 - **Environment switcher**: users can save their named environments (display name + environment URL) in localStorage; selecting one updates all environment-scoped links to that environment's base URL
@@ -150,5 +149,5 @@ The goal is to reconstruct a useful "my apps" view for Power Platform — the on
 
 ---
 
-*Last updated: 2026-06-09*
+*Last updated: 2026-06-27*
 *Maintained by: Jukka Niiranen — [perspectives.plus](https://perspectives.plus)*

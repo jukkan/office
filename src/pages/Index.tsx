@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import TileGrid from "../components/TileGrid";
 import OfficeLauncherStyles from "./OfficeLauncherStyles";
 import OfficeLauncherControls from "./OfficeLauncherControls";
+import KeyboardShortcutOverlay from "../components/KeyboardShortcutOverlay";
+import AdminSection from "../components/sections/AdminSection";
+import PowerPlatformSection from "../components/sections/PowerPlatformSection";
 import { defaultTiles, AppTile } from "./tilesDefault";
+import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import { Button } from "../components/ui/button";
 import { Download } from "lucide-react";
 
@@ -11,6 +15,9 @@ const Index = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [isEditMode, setIsEditMode] = useState(false);
   const [tiles, setTiles] = useState<AppTile[]>(defaultTiles);
+  const [showShortcutHelp, setShowShortcutHelp] = useState(false);
+
+  useKeyboardShortcuts(tiles, () => setShowShortcutHelp(true));
 
   useEffect(() => {
     // Get theme from localStorage or fallback to system preference
@@ -87,9 +94,10 @@ const Index = () => {
     index: number,
     name: string,
     url: string,
-    icon: string
+    icon: string,
+    createUrl?: string
   ) => {
-    updateTile(index, { name, url, icon: icon || "🆕", isEditing: false });
+    updateTile(index, { name, url, icon: icon || "🆕", createUrl, isEditing: false });
   };
 
   // Export/Import Handlers ---
@@ -123,7 +131,14 @@ const Index = () => {
         onToggleEditMode={toggleEditMode}
         onExport={handleExport}
         onImport={handleImport}
+        onShowShortcuts={() => setShowShortcutHelp(true)}
       />
+      {showShortcutHelp && (
+        <KeyboardShortcutOverlay
+          tiles={tiles}
+          onClose={() => setShowShortcutHelp(false)}
+        />
+      )}
       <div className="container">
         <header className="header">
           <h1>Office App Launcher</h1>
@@ -141,6 +156,9 @@ const Index = () => {
           onTileDelete={deleteTile}
           onAddTile={addNewTile}
         />
+
+        <AdminSection />
+        <PowerPlatformSection />
 
         <footer className="footer">
           <div className="footer-content">

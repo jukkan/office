@@ -17,6 +17,7 @@ interface OfficeLauncherControlsProps {
   onToggleEditMode: () => void;
   onExport: () => void;
   onImport: () => void;
+  onShowShortcuts: () => void;
 }
 
 const OfficeLauncherControls: React.FC<OfficeLauncherControlsProps> = ({
@@ -26,9 +27,19 @@ const OfficeLauncherControls: React.FC<OfficeLauncherControlsProps> = ({
   onToggleEditMode,
   onExport,
   onImport,
+  onShowShortcuts,
 }) => (
   <div className="fixed top-4 right-4 flex flex-col items-end w-max z-50 pointer-events-none">
     <div className="flex flex-row gap-3 w-full pointer-events-auto">
+      <button
+        className="theme-toggle"
+        onClick={onShowShortcuts}
+        aria-label="Keyboard shortcuts"
+        tabIndex={0}
+        style={{ fontSize: "1rem", fontWeight: 700 }}
+      >
+        ?
+      </button>
       <button
         className="theme-toggle"
         onClick={onToggleTheme}

@@ -10,9 +10,18 @@
 
 ## What is this project about?
 
-It's a simple home page that helps you to launch common apps in your Microsoft 365 subscription. That's it!
+It's a home page that helps you launch common apps in your Microsoft 365 subscription — faster than hunting through the waffle menu that no longer exists, and without a Copilot chat box blocking the way.
 
 Some more background info is available in [the launch post](https://www.perspectives.plus/p/i-created-a-better-office-com).
+
+**What can it do?**
+
+- Customisable tile grid — add, remove, and reorder app tiles; persisted in localStorage
+- **Quick-create shortcuts** — hover a tile to reveal a `+` button that opens a blank Word doc, Excel sheet, PowerPoint, OneNote page, or Teams meeting directly
+- **Keyboard shortcuts** — press `O`, `W`, `E`, `T` etc. to launch apps without touching the mouse; `?` shows the full list
+- **Admin portals section** — one-click access to M365 Admin, Entra ID, Exchange Admin, Teams Admin, Intune, Purview, Security, Azure Portal, and Power Platform Admin Center (collapsed by default, so it's there when you need it)
+- **Power Platform section** — quick-launch links to all five makers plus an environment switcher: save your environments by GUID and get instant deep links to Solutions, Apps, Dataverse tables, Flows, and environment settings
+- Light/dark theme, export/import config as JSON, installable as a PWA
 
 **Doesn't Microsoft offer this already?**
 
@@ -24,7 +33,7 @@ Tell me about it. It's quite alright to launch new products and make GenAI avail
 
 ## How is this built?
 
-It's built with GenAI. Using [Lovable](https://lovable.dev/) and ChatGPT mostly.
+It's built with GenAI. [Lovable](https://lovable.dev/) and ChatGPT got it started; [Claude Code](https://claude.ai/code) by Anthropic took over for v1.3.0 and is now doing most of the heavy lifting.
 
 **Hey! I thought you didn't want AI to take over everything?**
 
