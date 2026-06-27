@@ -40,6 +40,19 @@ A dedicated tile section for Power Platform makers and admins — one of the mos
 - Direct editor launch links per environment: canvas app editor, model-driven app list, Dataverse table editor, solution list
 - This section is hidden by default, enabled via a toggle for users who identify as makers/admins
 
+### 1.5 Tile context menu
+Right-click (desktop) or long-press (mobile) on any tile opens a small context menu. This replaces the `+` hover button (which is not useful on touch and hard to discover on desktop) with a consistent interaction model across all tile types.
+
+Menu items:
+- **Open** — same as clicking the tile
+- **Copy URL** — writes the tile's URL to clipboard with a brief "Copied!" toast
+- **New [app]** — quick-create shortcut (only for tiles that have a `createUrl`)
+- **Edit tile** — enters edit state (only when edit mode is active)
+
+Built on a `useTileActions(tile, context)` hook so Phase 2 and Phase 3 can add per-tile actions (recent files, move to section, etc.) without touching the menu component. Architecture note: `docs/architecture-tile-actions.md`
+
+Requested in [issue #5](https://github.com/jukkan/office/issues/5). Spec: `docs/phase1/1.5-tile-context-menu.md`
+
 ---
 
 ## Phase 2 — Graph API integration (the real homepage)
